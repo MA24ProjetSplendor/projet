@@ -14,6 +14,8 @@ namespace Splendor
         private Ressources ress;
         private int prestigePt;
         private int level;
+        private int idCard;
+
         //tableau : l'index correspond à l'énumération, la valeur à la ressource requise
         private int[] cout = new int[4];
 
@@ -31,6 +33,18 @@ namespace Splendor
                 ress = value;
             }
 
+        }
+
+        public int IdCard
+        {
+            get
+            {
+                return idCard;
+            }
+            set
+            {
+                idCard = value;
+            }
         }
 
         /// <summary>

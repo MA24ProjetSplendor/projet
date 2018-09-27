@@ -13,8 +13,9 @@ namespace Splendor
     /// </summary>
     class ConnectionDB
     {
+
         //connection to the database
-        private SQLiteConnection m_dbConnection; 
+        private SQLiteConnection m_dbConnection;
 
         /// <summary>
         /// constructor : creates the connection to the database SQLite
@@ -23,7 +24,7 @@ namespace Splendor
         {
 
             SQLiteConnection.CreateFile("Splendor.sqlite");
-            
+
             m_dbConnection = new SQLiteConnection("Data Source=Splendor.sqlite;Version=3;");
             m_dbConnection.Open();
 
@@ -45,24 +46,51 @@ namespace Splendor
         public Stack<Card> GetListCardAccordingToLevel(int level)
         {
             //Get all the data from card table selecting them according to the data
+            string sql = "select * from card order by"+level;
+            SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
+            SQLiteDataReader reader = command.ExecuteReader();
+
+
             //TO DO
             //Create an object "Stack of Card"
             Stack<Card> listCard = new Stack<Card>();
             //do while to go to every record of the card table
+            //Get the ressourceid and the number of prestige points
+
+            string ressourceid = "";
+            string prestigepoint = "";
+
+
+            while (reader.Read())
+            {
+                Card card = new Card();
+
+                card.Level = (int)reader["level"];
+                card.PrestigePt = (int)reader["nbPtPrestige"];
+                card.IdCard = (int)reader["idcard"];
+
+
+                listCard.Push(card);
+            }
+
+
+
             //while (....)
             //{
-                //Get the ressourceid and the number of prestige points
-                //Create a card object
-                
-                //select the cost of the card : look at the cost table (and other)
-                
-                //do while to go to every record of the card table
-                //while (....)
-                //{
-                    //get the nbRessource of the cost
-                //}
-                //push card into the stack
-                
+
+            //Create a card object
+
+      
+
+            //select the cost of the card : look at the cost table (and other)
+
+            //do while to go to every record of the card table
+            //while (....)
+            //{
+            //get the nbRessource of the cost
+            //}
+            //push card into the stack
+
             //}
             return listCard;
         }
@@ -88,7 +116,7 @@ namespace Splendor
             command.ExecuteNonQuery();
         }
 
-        
+
         /// <summary>
         /// get the name of the player according to his id
         /// </summary>
@@ -112,20 +140,16 @@ namespace Splendor
         /// </summary>
         private void CreateInsertRessources()
         {
-            //TO DO
-            string sql = "CREATE TABLE cost (id INT PRIMARY KEY, prix VARCHAR(20))";
-            SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
-            command.ExecuteNonQuery();
+            InsertInto("CREATE TABLE ressource (idRessource INT PRIMARY KEY, Nom STRING)");
+            
+            // Insérer les données dans la table Ressource
 
-            sql = "insert into player (id, pseudo) values (0, 'Fred')";
-            command = new SQLiteCommand(sql, m_dbConnection);
-            command.ExecuteNonQuery();
-            sql = "insert into player (id, pseudo) values (1, 'Harry')";
-            command = new SQLiteCommand(sql, m_dbConnection);
-            command.ExecuteNonQuery();
-            sql = "insert into player (id, pseudo) values (2, 'Sam')";
-            command = new SQLiteCommand(sql, m_dbConnection);
-            command.ExecuteNonQuery();
+            InsertInto("insert into ressource(idRessource, Nom) values (1,'Rubis')");
+            InsertInto("insert into ressource(idRessource, Nom) values (2,'Emeraude')");
+            InsertInto("insert into ressource(idRessource, Nom) values (3,'Onyx')");
+            InsertInto("insert into ressource(idRessource, Nom) values (4,'Saphir')");
+            InsertInto("insert into ressource(idRessource, Nom) values (5,'Diamant')");
+            InsertInto("insert into ressource(idRessource, Nom) values (6,'Or')");
         }
 
         private void InsertInto(string sql)
@@ -140,317 +164,357 @@ namespace Splendor
         private void CreateInsertCards()
         {
             // Créer la table
-        
-            InsertInto("CREATE TABLE cards (idcard INT PRIMARY KEY, fkRessource Int, level Int, nbPtPrestige Int, fkPlayer Int)");
-            InsertInto("CREATE TABLE ressource (idRessource INT PRIMARY KEY, Nom STRING)");
-            InsertInto("CREATE TABLE cost (idCost INT PRIMARY KEY, fkCard INT, fkRessource INT, nbressource INT)");
 
-            // Insérer les données dans la table Ressource
-
-            InsertInto("insert into card(idRessource, Nom) values (1,'Rubis')");
-            InsertInto("insert into card(idRessource, Nom) values (2,'Saphir')");
-            InsertInto("insert into card(idRessource, Nom) values (3,'Emeraude')");
-            InsertInto("insert into card(idRessource, Nom) values (4,'Onyx')");
-            InsertInto("insert into card(idRessource, Nom) values (5,'Or')");
-            InsertInto("insert into card(idRessource, Nom) values (6,'Diamant')");
-
+            InsertInto("CREATE TABLE card (idcard INT PRIMARY KEY, fkRessource Int, level Int, nbPtPrestige Int, fkPlayer Int)");  
+            InsertInto("CREATE TABLE cost (idCost INTEGER PRIMARY KEY AUTOINCREMENT , fkCard INT, fkRessource INT, nbressource INT)");
+         
             // Insérer les données dans la table Costs
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (2, 2,4");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (2, 2,4");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (3, 3,4");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (3, 3,4");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (4, 4,3");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (4, 4,3");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (5, 5,4");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (6, 6,4");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (6, 6,4");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (7, 7,3");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (7, 7,3");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (8, 8,3");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (8, 8,3");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (9, 9,3");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (9, 9,3");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (9, 9,3");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (10, 10,4");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (11, 11,3");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (11, 11,3");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (11, 11,3");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (12, 12,3");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (13, 13,7");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (13, 13,3");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (14, 14,3");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (14, 14,3");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (14, 14,3");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (15, 15,5");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (15, 15,3");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (15, 15,3");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (15, 15,3");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (16, 16,3");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (16, 16,6");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (16, 16,3");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (17, 17,3");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (17, 17,6");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (18, 18,7");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (19, 19,7");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (20, 20,7");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (21, 21,3");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (21, 21,3");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (22, 22,3");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (22, 22,7");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (23, 23,7");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (24, 24,3");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (24, 24,3");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (24, 24,5");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (25, 25,3");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (25, 25,3");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (25, 25,5");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (26, 26,7");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (27, 27,6");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (27, 27,3");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (27, 27,3");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (29, 29,3");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (29, 29,7");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (30, 30,3");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (30, 30,6");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (31, 31,3");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (31, 31,5");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (31, 31,3");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (32, 32,5");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (33, 33,2");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (33, 33,3");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (33, 33,3");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (34, 34,2");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (34, 34,3");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (34, 34,2");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (35, 35,4");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (35, 35,1");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (35, 35,2");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (36, 36,3");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (36, 36,3");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (37, 37,3");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (37, 37,5");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (38, 38,1");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (38, 38,4");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (39, 39,3");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (39, 39,2");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (39, 39,2");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (40, 40,1");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (40, 40,2");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (41, 41,5");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (42, 42,3");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (42, 42,5");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (43, 43,5");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (45, 45,6");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (46, 46,2");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (46, 46,3");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (47, 47,3");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (47, 47,2");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (48, 48,6");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (49, 49,3");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (49, 49,3");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (49, 49,2");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (51, 51,3");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (51, 51,2");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (52, 52,5");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (53, 53,2");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (53, 53,3");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (54, 54,5");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (55, 55,2");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (55, 55,2");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (56, 56,3");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (57, 57,2");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (57, 57,4");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (57, 57,1");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (58, 58,2");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (58, 58,4");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (59, 59,5");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (59, 59,3");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (60, 60,6");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (61, 61,6");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (62, 62,3");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (62, 62,1");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (62, 62,1");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (63, 63,3");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (64, 64,1");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (64, 64,3");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (65, 65,1");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (65, 65,1");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (66, 66,2");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (66, 66,1");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (66, 66,1");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (67, 67,2");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (67, 67,1");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (68, 68,2");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (68, 68,2");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (69, 69,3");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (70, 70,1");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (70, 70,2");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (70, 70,1");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (70, 70,1");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (71, 71,2");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (71, 71,1");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (71, 71,2");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (72, 72,1");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (72, 72,1");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (72, 72,1");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (72, 72,1");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (73, 73,4");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (74, 74,1");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (74, 74,1");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (74, 74,1");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (76, 76,2");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (77, 77,1");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (77, 77,2");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (78, 78,1");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (78, 78,2");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (79, 79,1");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (79, 79,1");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (79, 79,1");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (81, 81,1");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (81, 81,2");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (82, 82,2");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (83, 83,3");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (84, 84,1");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (84, 84,2");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (85, 85,1");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (85, 85,1");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (85, 85,1");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (86, 86,1");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (86, 86,1");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (86, 86,2");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (87, 87,4");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (88, 88,1");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (88, 88,1");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (88, 88,1");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (89, 89,2");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (90, 90,3");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (91, 91,2");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (91, 91,2");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (92, 92,2");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (92, 92,2");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (93, 93,1");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (93, 93,3");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (93, 93,1");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (94, 94,4");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (95, 95,1");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (95, 95,3");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (96, 96,2");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (96, 96,2");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (96, 96,1");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (97, 97,1");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (97, 97,1");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (97, 97,1");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (98, 98,2");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (98, 98,2");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (99, 99,1");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (100, 100,1");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (100, 100,2");
-            InsertInto("insert into cost(idCost, fkCard, fkRessource, nbRessource) values (100, 100,1");
 
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (2,2,4)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (2,4,4)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (3,1,4)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (3,2,4)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (4,3,3)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (4,4,3)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (4,5,3)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (5,3,4)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (5,5,4)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (6,1,4)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (6,3,4)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (7,1,3)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (7,3,3)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (7,5,3)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (8,2,3)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (8,4,3)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (8,5,3)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (9,1,3)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (9,2,3)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (9,4,3)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (10,4,4)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (10,5,4)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (11,1,3)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (11,2,3)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (11,3,3)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (12,4,3)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (12,5,7)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (13,1,7)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (13,3,3)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (14,1,3)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (14,3,3)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (14,4,3)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (14,5,5)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (15,1,5)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (15,2,3)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (15,3,3)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (15,4,3)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (16,1,3)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (16,2,6)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (16,4,3)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (17,2,3)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (17,4,6)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (17,5,3)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (18,3,7)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (19,3,7)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (19,5,3)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (20,2,7)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (21,3,3)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (21,4,3)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (21,5,6)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (22,2,3)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (22,4,7)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (23,1,7)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (24,2,3)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (24,3,3)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (24,4,5)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (24,5,3)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (25,1,3)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (25,2,3)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (25,3,5)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (25,5,3)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (26,4,7)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (27,1,6)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (27,2,3)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (27,3,3)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (28,5,7)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (29,1,3)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (29,2,7)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (30,1,3)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (30,3,6)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (30,5,3)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (31,1,3)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (31,2,5)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (31,4,3)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (31,5,3)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (32,1,5)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (33,1,2)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (33,3,3)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (33,4,3)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (34,1,2)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (34,2,3)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (34,3,2)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (35,1,4)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (35,2,1)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (35,3,2)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (36,1,3)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (36,4,3)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (36,5,2)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (37,2,3)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (37,4,5)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (38,1,1)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (38,3,4)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (38,5,2)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (39,1,3)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (39,2,2)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (39,4,2)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (40,3,1)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (40,4,2)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (40,5,4)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (41,2,5)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (42,1,3)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (42,2,5)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (43,3,5)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (43,5,3)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (44,5,6)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (45,4,6)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (46,3,2)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (46,4,3)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (46,5,2)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (47,2,3)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (47,3,2)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (47,5,3)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (48,1,6)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (49,2,3)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (49,3,3)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (49,4,2)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (50,5,5)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (51,1,3)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (51,2,2)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (51,5,3)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (52,4,5)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (53,1,2)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (53,3,3)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (53,5,2)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (54,3,5)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (55,2,2)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (55,4,2)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (55,5,3)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (56,4,3)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (56,5,5)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (57,1,2)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (57,2,4)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (57,4,1)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (58,2,2)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (58,4,4)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (58,5,1)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (59,1,5)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (59,3,3)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (60,2,6)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (61,3,6)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (62,1,3)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (62,2,1)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (62,3,1)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (63,1,3)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (64,1,1)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (64,3,3)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (64,5,1)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (65,3,1)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (65,4,1)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (65,5,3)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (66,1,2)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (66,2,1)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (66,3,1)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (66,5,1)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (67,1,2)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (67,3,1)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (68,3,2)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (68,4,2)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (69,4,3)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (70,1,1)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (70,2,2)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (70,3,1)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (70,4,1)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (71,2,2)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (71,3,1)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (71,4,2)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (72,1,1)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (72,2,1)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (72,3,1)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (72,4,1)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (73,2,4)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (74,2,1)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (74,3,1)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (74,4,1)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (74,5,2)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (75,5,3)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (76,1,2)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (76,5,2)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (77,2,1)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (77,4,2)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (78,2,1)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (78,3,2)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (78,5,2)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (79,2,1)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (79,3,1)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (79,4,1)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (79,5,1)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (80,5,4)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (81,1,1)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (81,4,2)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (81,5,2)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (82,2,2)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (82,5,2)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (83,2,3)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (84,1,1)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (84,2,2)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (85,1,1)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (85,2,1)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (85,4,1)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (85,5,1)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (86,1,1)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (86,2,1)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (86,4,2)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (86,5,1)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (87,4,4)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (88,1,1)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (88,2,1)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (88,3,1)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (88,5,1)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (89,3,2)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (89,5,1)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (90,3,3)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (91,1,2)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (91,2,2)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (91,5,1)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (92,2,2)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (92,3,2)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (93,1,1)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (93,2,3)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (93,4,1)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (94,1,4)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (95,2,1)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (95,4,3)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (95,5,1)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (96,1,2)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (96,3,2)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (96,4,1)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (97,1,1)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (97,3,1)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (97,4,1)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (97,5,1)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (98,1,2)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (98,4,2)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (99,4,1)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (99,5,2)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (100,1,1)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (100,3,2)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (100,4,1)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (100,5,1)");
+            InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (101,4,4)");
 
 
             // Insérer les données dans la table Cards
 
-            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (2, 0,4,3");
-            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (3, 0,4,3");
-            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (4, 0,4,3");
-            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (5, 0,4,3");
-            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (6, 0,4,3");
-            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (7, 0,4,3");
-            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (8, 0,4,3");
-            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (9, 0,4,3");
-            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (10, 0,4,3");
-            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (11, 0,4,3");
-            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (12, 0,3,5");
-            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (13, 0,3,5");
-            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (14, 0,3,3");
-            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (15, 0,3,3");
-            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (16, 0,3,4");
-            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (17, 0,3,4");
-            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (18, 0,3,4");
-            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (19, 0,3,5");
-            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (20, 0,3,4");
-            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (21, 0,3,4");
-            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (22, 0,3,5");
-            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (23, 0,3,4");
-            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (24, 0,3,3");
-            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (25, 0,3,3");
-            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (26, 0,3,4");
-            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (27, 0,3,4");
-            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (28, 0,3,4");
-            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (29, 0,3,5");
-            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (30, 0,3,4");
-            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (31, 0,3,3");
-            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (32, 0,2,2");
-            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (33, 0,2,1");
-            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (34, 0,2,1");
-            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (35, 0,2,2");
-            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (36, 0,2,1");
-            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (37, 0,2,2");
-            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (38, 0,2,2");
-            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (39, 0,2,1");
-            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (40, 0,2,2");
-            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (41, 0,2,2");
-            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (42, 0,2,2");
-            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (43, 0,2,2");
-            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (44, 0,2,3");
-            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (45, 0,2,3");
-            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (46, 0,2,1");
-            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (47, 0,2,1");
-            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (48, 0,2,3");
-            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (49, 0,2,1");
-            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (50, 0,2,2");
-            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (51, 0,2,1");
-            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (52, 0,2,2");
-            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (53, 0,2,1");
-            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (54, 0,2,2");
-            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (55, 0,2,1");
-            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (56, 0,2,2");
-            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (57, 0,2,2");
-            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (58, 0,2,2");
-            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (59, 0,2,2");
-            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (60, 0,2,3");
-            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (61, 0,2,3");
-            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (62, 0,1,0");
-            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (63, 0,1,0");
-            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (64, 0,1,0");
-            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (65, 0,1,0");
-            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (66, 0,1,0");
-            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (67, 0,1,0");
-            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (68, 0,1,0");
-            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (69, 0,1,0");
-            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (70, 0,1,0");
-            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (71, 0,1,0");
-            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (72, 0,1,0");
-            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (73, 0,1,1");
-            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (74, 0,1,0");
-            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (75, 0,1,0");
-            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (76, 0,1,0");
-            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (77, 0,1,0");
-            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (78, 0,1,0");
-            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (79, 0,1,0");
-            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (80, 0,1,1");
-            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (81, 0,1,0");
-            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (82, 0,1,0");
-            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (83, 0,1,0");
-            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (84, 0,1,0");
-            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (85, 0,1,0");
-            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (86, 0,1,0");
-            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (87, 0,1,1");
-            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (88, 0,1,0");
-            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (89, 0,1,0");
-            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (90, 0,1,0");
-            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (91, 0,1,0");
-            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (92, 0,1,0");
-            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (93, 0,1,0");
-            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (94, 0,1,1");
-            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (95, 0,1,0");
-            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (96, 0,1,0");
-            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (97, 0,1,0");
-            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (98, 0,1,0");
-            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (99, 0,1,0");
-            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (100, 0,1,0");
-            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (101, 0,1,1");
+            InsertInto("insert into card(idcard, level, nbPtPrestige) values (2,4,3)");
+            InsertInto("insert into card(idcard, level, nbPtPrestige) values (3,4,3)");
+            InsertInto("insert into card(idcard, level, nbPtPrestige) values (4,4,3)");
+            InsertInto("insert into card(idcard, level, nbPtPrestige) values (5,4,3)");
+            InsertInto("insert into card(idcard, level, nbPtPrestige) values (6,4,3)");
+            InsertInto("insert into card(idcard, level, nbPtPrestige) values (7,4,3)");
+            InsertInto("insert into card(idcard, level, nbPtPrestige) values (8,4,3)");
+            InsertInto("insert into card(idcard, level, nbPtPrestige) values (9,4,3)");
+            InsertInto("insert into card(idcard, level, nbPtPrestige) values (10,4,3)");
+            InsertInto("insert into card(idcard, level, nbPtPrestige) values (11,4,3)");
+            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (12, 4,3,5)");
+            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (13, 3,3,5)");
+            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (14, 2,3,3)");
+            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (15, 5,3,3)");
+            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (16, 1,3,4)");
+            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (17, 2,3,4)");
+            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (18, 5,3,4)");
+            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (19, 5,3,5)");
+            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (20, 1,3,4)");
+            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (21, 4,3,4)");
+            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (22, 2,3,5)");
+            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (23, 3,3,4)");
+            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (24, 1,3,3)");
+            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (25, 4,3,3)");
+            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (26, 2,3,4)");
+            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (27, 3,3,4)");
+            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (28, 4,3,4)");
+            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (29, 1,3,5)");
+            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (30, 5,3,4)");
+            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (31, 3,3,3)");
+            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (32, 5,2,2)");
+            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (33, 1,2,1)");
+            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (34, 5,2,1)");
+            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (35, 5,2,2)");
+            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (36, 5,2,1)");
+            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (37, 2,2,2)");
+            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (38, 4,2,2)");
+            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (39, 4,2,1)");
+            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (40, 2,2,2)");
+            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (41, 2,2,2)");
+            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (42, 3,2,2)");
+            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (43, 1,2,2)");
+            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (44, 5,2,3)");
+            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (45, 4,2,3)");
+            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (46, 2,2,1)");
+            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (47, 3,2,1)");
+            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (48, 1,2,3)");
+            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (49, 4,2,1)");
+            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (50, 3,2,2)");
+            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (51, 2,2,1)");
+            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (52, 4,2,2)");
+            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (53, 1,2,1)");
+            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (54, 1,2,2)");
+            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (55, 3,2,1)");
+            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (56, 4,2,2)");
+            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (57, 3,2,2)");
+            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (58, 1,2,2)");
+            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (59, 5,2,2)");
+            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (60, 2,2,3)");
+            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (61, 3,2,3)");
+            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (62, 3,1,0)");
+            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (63, 2,1,0)");
+            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (64, 1,1,0)");
+            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (65, 5,1,0)");
+            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (66, 4,1,0)");
+            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (67, 5,1,0)");
+            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (68, 5,1,0)");
+            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (69, 5,1,0)");
+            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (70, 5,1,0)");
+            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (71, 5,1,0)");
+            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (72, 5,1,0)");
+            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (73, 5,1,1)");
+            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (74, 1,1,0)");
+            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (75, 1,1,0)");
+            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (76, 1,1,0)");
+            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (77, 1,1,0)");
+            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (78, 1,1,0)");
+            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (79, 1,1,0)");
+            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (80, 1,1,1)");
+            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (81, 3,1,0)");
+            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (82, 3,1,0)");
+            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (83, 3,1,0)");
+            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (84, 3,1,0)");
+            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (85, 3,1,0)");
+            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (86, 3,1,0)");
+            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (87, 3,1,1)");
+            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (88, 4,1,0)");
+            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (89, 4,1,0)");
+            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (90, 4,1,0)");
+            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (91, 4,1,0)");
+            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (92, 4,1,0)");
+            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (93, 4,1,0)");
+            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (94, 4,1,1)");
+            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (95, 2,1,0)");
+            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (96, 2,1,0)");
+            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (97, 2,1,0)");
+            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (98, 2,1,0)");
+            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (99, 2,1,0)");
+            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (100, 2,1,0)");
+            InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (101, 2,1,1)");
+
 
         }
 
