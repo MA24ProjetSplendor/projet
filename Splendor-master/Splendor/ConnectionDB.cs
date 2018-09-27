@@ -46,7 +46,7 @@ namespace Splendor
         public Stack<Card> GetListCardAccordingToLevel(int level)
         {
             //Get all the data from card table selecting them according to the data
-            string sql = "select * from card order by"+level;
+            string sql = "select * from card where level=" + level;
             SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
             SQLiteDataReader reader = command.ExecuteReader();
 
@@ -57,18 +57,26 @@ namespace Splendor
             //do while to go to every record of the card table
             //Get the ressourceid and the number of prestige points
 
-            string ressourceid = "";
-            string prestigepoint = "";
-
-
             while (reader.Read())
             {
                 Card card = new Card();
-
                 card.Level = (int)reader["level"];
                 card.PrestigePt = (int)reader["nbPtPrestige"];
                 card.IdCard = (int)reader["idcard"];
+                card.Ress = (Ressources)reader["fkRessource"];
 
+                sql = "select * from cost where fkCard = " + card.IdCard;
+                SQLiteCommand commande = new SQLiteCommand(sql, m_dbConnection);
+                SQLiteDataReader Costreader = commande.ExecuteReader();
+
+                for(int i=0;i<4;i++)
+                {
+                    if(i == (int)Costreader["fkRessource"])
+                    {
+                        card.Cout[i] = (int)Costreader["nbressource"];
+                        Costreader.NextResult();
+                    }
+                }
 
                 listCard.Push(card);
             }
