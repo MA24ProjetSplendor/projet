@@ -166,7 +166,7 @@ namespace Splendor
             player.Name = name;
             player.Id = id;
             player.Ressources = new int[] { 2, 0, 1, 1, 1 };
-            player.Coins = new int[] { 1, 1, 1, 1, 1 };
+            player.Coins = new int[] { 1, 1, 1, 1, 1 }; 
 
             lblPlayerDiamandCoin.Text = player.Coins[0].ToString();
             lblPlayerOnyxCoin.Text = player.Coins[1].ToString();

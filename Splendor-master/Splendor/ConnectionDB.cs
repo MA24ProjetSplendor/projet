@@ -43,7 +43,7 @@ namespace Splendor
         /// get the list of cards according to the level
         /// </summary>
         /// <returns>cards stack</returns>
-        public Stack<Card> GetListCardAccordingToLevel(int level)
+        /*public Stack<Card> GetListCardAccordingToLevel(int level)
         {
             //Get all the data from card table selecting them according to the data
             string sql = "select * from card where level=" + level;
@@ -101,7 +101,7 @@ namespace Splendor
 
             //}
             return listCard;
-        }
+        }*/
 
 
         /// <summary>
@@ -163,40 +163,12 @@ namespace Splendor
 
         private void InsertInto(string sql)
         {
-            SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
-            command.ExecuteNonQuery();
-
-            string sql = "CREATE TABLE ressource (idRessource INT PRIMARY KEY, Nom STRING)";
-            SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
-            command.ExecuteNonQuery();
-            
-            // Insérer les données dans la table Ressource
-
-            string sql1 = "insert into ressource(idRessource, Nom) values (1,'Rubis')";
-            command = new SQLiteCommand(sql1, m_dbConnection);
-            command.ExecuteNonQuery();
-            string sql2 = "insert into ressource(idRessource, Nom) values (2,'Saphir')";
-            command = new SQLiteCommand(sql2, m_dbConnection);
-            command.ExecuteNonQuery();
-            string sql3 = "insert into ressource(idRessource, Nom) values (3,'Onyx')";
-            command = new SQLiteCommand(sql3, m_dbConnection);
-            command.ExecuteNonQuery();
-            string sql4 = "insert into ressource(idRessource, Nom) values (4,'Emeraude')";
-            command = new SQLiteCommand(sql4, m_dbConnection);
-            command.ExecuteNonQuery();
-            string sql5 = "insert into ressource(idRessource, Nom) values (5,'Diamant')";
-            command = new SQLiteCommand(sql5, m_dbConnection);
-            command.ExecuteNonQuery();
-            string sql6 = "insert into ressource(idRessource, Nom) values (6,'Or')";
-            command = new SQLiteCommand(sql6, m_dbConnection);
-            command.ExecuteNonQuery();
-
+         
         }
 
         private void LoadIdRessource()
         {
-            
-            string sql = "select ";
+          
 
         }
 
