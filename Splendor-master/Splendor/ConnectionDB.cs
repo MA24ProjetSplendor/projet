@@ -69,13 +69,9 @@ namespace Splendor
                 SQLiteCommand commande = new SQLiteCommand(sql, m_dbConnection);
                 SQLiteDataReader Costreader = commande.ExecuteReader();
 
-                for(int i=0;i<4;i++)
+                while(Costreader.Read())
                 {
-                    if(i == (int)Costreader["fkRessource"])
-                    {
-                        card.Cout[i] = (int)Costreader["nbressource"];
-                        Costreader.NextResult();
-                    }
+                    card.Cout[(int)Costreader["fkRessource"] - 1] = (int)Costreader["nbRessource"];
                 }
 
                 listCard.Push(card);
@@ -84,11 +80,6 @@ namespace Splendor
 
 
             //while (....)
-            //{
-
-            //Create a card object
-
-      
 
             //select the cost of the card : look at the cost table (and other)
 
@@ -174,7 +165,7 @@ namespace Splendor
             // Créer la table
 
             InsertInto("CREATE TABLE card (idcard INT PRIMARY KEY, fkRessource Int, level Int, nbPtPrestige Int, fkPlayer Int)");  
-            InsertInto("CREATE TABLE cost (idCost INTEGER PRIMARY KEY AUTOINCREMENT , fkCard INT, fkRessource INT, nbressource INT)");
+            InsertInto("CREATE TABLE cost (idCost INTEGER PRIMARY KEY AUTOINCREMENT , fkCard INT, fkRessource INT, nbRessource INT)");
          
             // Insérer les données dans la table Costs
 
