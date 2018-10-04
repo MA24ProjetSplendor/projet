@@ -112,7 +112,37 @@ namespace Splendor
         /// </summary>
         private void CreateInsertRessources()
         {
-            //TO DO
+            string sql = "CREATE TABLE ressource (idRessource INT PRIMARY KEY, Nom STRING)";
+            SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
+            command.ExecuteNonQuery();
+            
+            // Insérer les données dans la table Ressource
+
+            string sql1 = "insert into ressource(idRessource, Nom) values (1,'Rubis')";
+            command = new SQLiteCommand(sql1, m_dbConnection);
+            command.ExecuteNonQuery();
+            string sql2 = "insert into ressource(idRessource, Nom) values (2,'Saphir')";
+            command = new SQLiteCommand(sql2, m_dbConnection);
+            command.ExecuteNonQuery();
+            string sql3 = "insert into ressource(idRessource, Nom) values (3,'Onyx')";
+            command = new SQLiteCommand(sql3, m_dbConnection);
+            command.ExecuteNonQuery();
+            string sql4 = "insert into ressource(idRessource, Nom) values (4,'Emeraude')";
+            command = new SQLiteCommand(sql4, m_dbConnection);
+            command.ExecuteNonQuery();
+            string sql5 = "insert into ressource(idRessource, Nom) values (5,'Diamant')";
+            command = new SQLiteCommand(sql5, m_dbConnection);
+            command.ExecuteNonQuery();
+            string sql6 = "insert into ressource(idRessource, Nom) values (6,'Or')";
+            command = new SQLiteCommand(sql6, m_dbConnection);
+            command.ExecuteNonQuery();
+
+        }
+
+        private void LoadIdRessource()
+        {
+            
+            string sql = "select ";
         }
 
         /// <summary>
