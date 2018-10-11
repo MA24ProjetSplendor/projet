@@ -19,6 +19,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Text.RegularExpressions;
 
 namespace Splendor
 {
@@ -147,7 +148,31 @@ namespace Splendor
 
             //we wire the click on all cards to the same event
             //TO DO for all cards
+
+            // Cards level 1
             txtLevel11.Click += ClickOnCard;
+            txtLevel12.Click += ClickOnCard;
+            txtLevel13.Click += ClickOnCard;
+            txtLevel14.Click += ClickOnCard;
+
+            // Cards level 2
+            txtLevel21.Click += ClickOnCard;
+            txtLevel22.Click += ClickOnCard;
+            txtLevel23.Click += ClickOnCard;
+            txtLevel24.Click += ClickOnCard;
+
+            // Cards level 3
+            txtLevel31.Click += ClickOnCard;
+            txtLevel32.Click += ClickOnCard;
+            txtLevel33.Click += ClickOnCard;
+            txtLevel34.Click += ClickOnCard;
+
+            // Cards Noble
+            txtNoble1.Click += ClickOnCard;
+            txtNoble2.Click += ClickOnCard;
+            txtNoble3.Click += ClickOnCard;
+            txtNoble4.Click += ClickOnCard;
+
         }
 
         private void ClickOnCard(object sender, EventArgs e)
@@ -155,6 +180,107 @@ namespace Splendor
             //We get the value on the card and we split it to get all the values we need (number of prestige points and ressource)
             //Enable the button "Validate"
             //TO DO
+            {
+                // Récupère toute les informations
+                TextBox txtBox = (TextBox) sender;
+
+                string[] informations = txtBox.Lines;
+
+                string[] ressources = informations[0].Split('\t');
+                ressources = ressources.Where(item => item != string.Empty).ToArray();
+
+                if(ressources[1] != "")
+                {
+                    int ptPrestige = Convert.ToInt32(ressources[1]);
+                }
+
+                int nbLine = informations.Length;
+
+                int line = 2;
+
+                List<List<string>> myList = new List<List<string>>();
+                List<string> cost = new List<string>();
+
+                while(line < nbLine)
+                {
+                    cost.Clear();
+
+                    if (informations[line].Contains("Rubis"))
+                    {
+                        string resultString = Regex.Match(informations[line], @"\d+").Value;
+
+                        Int32.Parse(resultString);
+
+                        cost.Add(resultString);
+
+                        myList.Add(cost);
+                    }
+
+                    if (informations[line].Contains("Emeraude"))
+                    {
+                        string resultString = Regex.Match(informations[line], @"\d+").Value;
+
+                        Int32.Parse(resultString);
+
+                        cost.Add(resultString);
+
+                        myList.Add(cost);
+                    }
+
+                    if (informations[line].Contains("Onyx"))
+                    {
+                        string resultString = Regex.Match(informations[line], @"\d+").Value;
+
+                        Int32.Parse(resultString);
+
+                        cost.Add(resultString);
+
+                        myList.Add(cost);
+                    }
+
+                    if (informations[line].Contains("Saphir"))
+                    {
+                        string resultString = Regex.Match(informations[line], @"\d+").Value;
+
+                        Int32.Parse(resultString);
+
+                        cost.Add(resultString);
+
+                        myList.Add(cost);
+                    }
+
+                    if (informations[line].Contains("Diamand"))
+                    {
+                        string resultString = Regex.Match(informations[line], @"\d+").Value;
+
+                        Int32.Parse(resultString);
+
+                        cost.Add(resultString);
+
+                        myList.Add(cost);
+                    }
+                    
+                    line++;
+                }
+
+                DialogResult dialogResult = MessageBox.Show(txtBox.Text, "Voulez-vous acheter la carte?", MessageBoxButtons.YesNo);
+                if (dialogResult == DialogResult.Yes)
+                {
+
+
+                    //do something
+                }
+                else if (dialogResult == DialogResult.No)
+                {
+                    //do something else
+                }
+
+
+
+                //get the text displayed in the textbox that has been clicked
+            }
+
+
         }
 
         /// <summary>
@@ -310,6 +436,8 @@ namespace Splendor
             //TO DO Get the id of the player : in release 0.1 there are only 3 players
             //Reload the data of the player
             //We are not allowed to click on the next button
+
+            currentPlayerId = (currentPlayerId % 3) + 1;
             
         }
 
