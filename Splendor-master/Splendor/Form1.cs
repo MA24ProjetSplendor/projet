@@ -177,6 +177,12 @@ namespace Splendor
 
         private void ClickOnCard(object sender, EventArgs e)
         {
+            List<List<string>> RubisCard = new List<List<string>>();
+            List<List<string>> EmeraudeCard = new List<List<string>>();
+            List<List<string>> OnyxCard = new List<List<string>>();
+            List<List<string>> SaphirCard = new List<List<string>>();
+            List<List<string>> DiamandCard = new List<List<string>>();
+
             //We get the value on the card and we split it to get all the values we need (number of prestige points and ressource)
             //Enable the button "Validate"
             //TO DO
@@ -198,7 +204,7 @@ namespace Splendor
 
                 int line = 2;
 
-                List<List<string>> myList = new List<List<string>>();
+                List<List<string>> CostCard = new List<List<string>>();
                 List<string> cost = new List<string>();
 
                 while(line < nbLine)
@@ -213,7 +219,7 @@ namespace Splendor
 
                         cost.Add(resultString);
 
-                        myList.Add(cost);
+                        CostCard.Add(cost);
                     }
 
                     if (informations[line].Contains("Emeraude"))
@@ -224,7 +230,7 @@ namespace Splendor
 
                         cost.Add(resultString);
 
-                        myList.Add(cost);
+                        CostCard.Add(cost);
                     }
 
                     if (informations[line].Contains("Onyx"))
@@ -235,7 +241,7 @@ namespace Splendor
 
                         cost.Add(resultString);
 
-                        myList.Add(cost);
+                        CostCard.Add(cost);
                     }
 
                     if (informations[line].Contains("Saphir"))
@@ -246,7 +252,7 @@ namespace Splendor
 
                         cost.Add(resultString);
 
-                        myList.Add(cost);
+                        CostCard.Add(cost);
                     }
 
                     if (informations[line].Contains("Diamand"))
@@ -257,7 +263,7 @@ namespace Splendor
 
                         cost.Add(resultString);
 
-                        myList.Add(cost);
+                        CostCard.Add(cost);
                     }
                     
                     line++;
@@ -266,9 +272,32 @@ namespace Splendor
                 DialogResult dialogResult = MessageBox.Show(txtBox.Text, "Voulez-vous acheter la carte?", MessageBoxButtons.YesNo);
                 if (dialogResult == DialogResult.Yes)
                 {
+                    string Ressource = ressources[0];
+
+                    switch (Ressource)
+                    {
+
+                        case "Rubis":
+                            List<string> cardBought = new List<string>();
+                            List<List<string>> cardBoughtDetail = new List<List<string>>();
+
+                            cardBought.Add(ressources[0]);
+
+                            cardBoughtDetail.Add(cardBought);
+                            //cardBoughtDetail.Add(CostCard);
+
+                            
 
 
-                    //do something
+
+                            
+                                
+
+                            //RubisCard.Add();
+                            break;
+
+
+                    }
                 }
                 else if (dialogResult == DialogResult.No)
                 {
