@@ -57,6 +57,7 @@ namespace Splendor
         /// <param name="e"></param>
         private void frmSplendor_Load(object sender, EventArgs e)
         {
+
             lblGoldCoin.Text = "5";
 
             lblDiamandCoin.Text = "7";
@@ -67,11 +68,14 @@ namespace Splendor
 
             conn = new ConnectionDB();
 
+
+            // Get Player Coin
+
+            int[] coins = conn.GetPlayerCoin(1);
+
             //load cards from the database
             //they are not hard coded any more
             //TO DO
-
-
 
             //load cards from the database
 
@@ -286,13 +290,7 @@ namespace Splendor
                             cardBoughtDetail.Add(cardBought);
                             //cardBoughtDetail.Add(CostCard);
 
-                            
-
-
-
-                            
-                                
-
+                                     
                             //RubisCard.Add();
                             break;
 

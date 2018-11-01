@@ -36,6 +36,53 @@ namespace Splendor
             //Create and insert ressources
             //TO DO
             CreateInsertRessources();
+            //Create and insert Coin
+            CreateInsertCoin();
+        }
+
+        private void CreateInsertCoin()
+        {
+            string sql = "CREATE TABLE NbCoin (IdNbCoin INTEGER PRIMARY KEY AUTOINCREMENT, fkPlayer INT, fkressource INT, nbCoin INT)";
+            SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
+            SQLiteDataReader reader = command.ExecuteReader();
+        }
+
+
+        public int[] GetPlayerCoin(int id)
+        {
+            string sql = "select * from NbCoin where fkPlayer ="+id;
+            SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
+            SQLiteDataReader reader = command.ExecuteReader();
+
+            int[] coins = new int[5];
+
+            int coin = 0;
+            int PlayerRessource = 0;
+        
+            while (reader.Read())
+            {
+                coin = (int)reader["nbCoin"];
+                PlayerRessource = (int)reader["fkRessource"];
+                coins[PlayerRessource] = coin;
+            }
+
+            return coins;
+
+
+           /* int NbPlayers = (Int32)command.ExecuteScalar();
+
+            for(int i=0;i<=NbPlayers;i++)
+            {
+
+                coins[i] = 
+
+
+
+
+                string insertCoin = "insert into NbCoin(NbCoin) VALUES(0) where FkPlayer ="+i;
+                SQLiteCommand cmd = new SQLiteCommand(insertCoin, m_dbConnection);
+            }*/
+       
         }
 
 
@@ -49,6 +96,7 @@ namespace Splendor
             string sql = "select * from card where level=" + level;
             SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
             SQLiteDataReader reader = command.ExecuteReader();
+
 
 
             //TO DO
