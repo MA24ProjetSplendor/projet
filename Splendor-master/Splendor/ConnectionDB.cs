@@ -36,6 +36,53 @@ namespace Splendor
             //Create and insert ressources
             //TO DO
             CreateInsertRessources();
+            //Create and insert Coin
+            CreateInsertCoin();
+        }
+
+        private void CreateInsertCoin()
+        {
+            string sql = "CREATE TABLE NbCoin (IdNbCoin INTEGER PRIMARY KEY AUTOINCREMENT, fkPlayer INT, fkressource INT, nbCoin INT)";
+            SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
+            SQLiteDataReader reader = command.ExecuteReader();
+        }
+
+
+        public int[] GetPlayerCoin(int id)
+        {
+            string sql = "select * from NbCoin where fkPlayer ="+id;
+            SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
+            SQLiteDataReader reader = command.ExecuteReader();
+
+            int[] coins = new int[5];
+
+            int coin = 0;
+            int PlayerRessource = 0;
+        
+            while (reader.Read())
+            {
+                coin = (int)reader["nbCoin"];
+                PlayerRessource = (int)reader["fkRessource"];
+                coins[PlayerRessource] = coin;
+            }
+
+            return coins;
+
+
+           /* int NbPlayers = (Int32)command.ExecuteScalar();
+
+            for(int i=0;i<=NbPlayers;i++)
+            {
+
+                coins[i] = 
+
+
+
+
+                string insertCoin = "insert into NbCoin(NbCoin) VALUES(0) where FkPlayer ="+i;
+                SQLiteCommand cmd = new SQLiteCommand(insertCoin, m_dbConnection);
+            }*/
+       
         }
 
 
@@ -49,6 +96,7 @@ namespace Splendor
             string sql = "select * from card where level=" + level;
             SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
             SQLiteDataReader reader = command.ExecuteReader();
+
 
 
             //TO DO
@@ -157,39 +205,8 @@ namespace Splendor
             SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
             command.ExecuteNonQuery();
 
-            string sql = "CREATE TABLE ressource (idRessource INT PRIMARY KEY, Nom STRING)";
-            SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
-            command.ExecuteNonQuery();
-            
-            // Insérer les données dans la table Ressource
-
-            string sql1 = "insert into ressource(idRessource, Nom) values (1,'Rubis')";
-            command = new SQLiteCommand(sql1, m_dbConnection);
-            command.ExecuteNonQuery();
-            string sql2 = "insert into ressource(idRessource, Nom) values (2,'Saphir')";
-            command = new SQLiteCommand(sql2, m_dbConnection);
-            command.ExecuteNonQuery();
-            string sql3 = "insert into ressource(idRessource, Nom) values (3,'Onyx')";
-            command = new SQLiteCommand(sql3, m_dbConnection);
-            command.ExecuteNonQuery();
-            string sql4 = "insert into ressource(idRessource, Nom) values (4,'Emeraude')";
-            command = new SQLiteCommand(sql4, m_dbConnection);
-            command.ExecuteNonQuery();
-            string sql5 = "insert into ressource(idRessource, Nom) values (5,'Diamant')";
-            command = new SQLiteCommand(sql5, m_dbConnection);
-            command.ExecuteNonQuery();
-            string sql6 = "insert into ressource(idRessource, Nom) values (6,'Or')";
-            command = new SQLiteCommand(sql6, m_dbConnection);
-            command.ExecuteNonQuery();
-
         }
 
-        private void LoadIdRessource()
-        {
-            
-            string sql = "select ";
-
-        }
 
         /// <summary>
         ///  create tables "cards", "cost", "ressource" and insert data

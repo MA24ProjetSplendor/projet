@@ -19,6 +19,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Text.RegularExpressions;
 
 namespace Splendor
 {
@@ -57,6 +58,7 @@ namespace Splendor
         /// <param name="e"></param>
         private void frmSplendor_Load(object sender, EventArgs e)
         {
+
             lblGoldCoin.Text = "5";
 
             lblDiamandCoin.Text = "7";
@@ -67,11 +69,14 @@ namespace Splendor
 
             conn = new ConnectionDB();
 
+
+            // Get Player Coin
+
+            int[] coins = conn.GetPlayerCoin(1);
+
             //load cards from the database
             //they are not hard coded any more
             //TO DO
-
-
 
             //load cards from the database
 
@@ -148,14 +153,162 @@ namespace Splendor
 
             //we wire the click on all cards to the same event
             //TO DO for all cards
+
+            // Cards level 1
             txtLevel11.Click += ClickOnCard;
+            txtLevel12.Click += ClickOnCard;
+            txtLevel13.Click += ClickOnCard;
+            txtLevel14.Click += ClickOnCard;
+
+            // Cards level 2
+            txtLevel21.Click += ClickOnCard;
+            txtLevel22.Click += ClickOnCard;
+            txtLevel23.Click += ClickOnCard;
+            txtLevel24.Click += ClickOnCard;
+
+            // Cards level 3
+            txtLevel31.Click += ClickOnCard;
+            txtLevel32.Click += ClickOnCard;
+            txtLevel33.Click += ClickOnCard;
+            txtLevel34.Click += ClickOnCard;
+
+            // Cards Noble
+            txtNoble1.Click += ClickOnCard;
+            txtNoble2.Click += ClickOnCard;
+            txtNoble3.Click += ClickOnCard;
+            txtNoble4.Click += ClickOnCard;
+
         }
 
         private void ClickOnCard(object sender, EventArgs e)
         {
+            List<List<string>> RubisCard = new List<List<string>>();
+            List<List<string>> EmeraudeCard = new List<List<string>>();
+            List<List<string>> OnyxCard = new List<List<string>>();
+            List<List<string>> SaphirCard = new List<List<string>>();
+            List<List<string>> DiamandCard = new List<List<string>>();
+
             //We get the value on the card and we split it to get all the values we need (number of prestige points and ressource)
             //Enable the button "Validate"
             //TO DO
+            {
+                // Récupère toute les informations
+                TextBox txtBox = (TextBox) sender;
+
+                string[] informations = txtBox.Lines;
+
+                string[] ressources = informations[0].Split('\t');
+                ressources = ressources.Where(item => item != string.Empty).ToArray();
+
+                if(ressources[1] != "")
+                {
+                    int ptPrestige = Convert.ToInt32(ressources[1]);
+                }
+
+                int nbLine = informations.Length;
+
+                int line = 2;
+
+                List<List<string>> CostCard = new List<List<string>>();
+                List<string> cost = new List<string>();
+
+                while(line < nbLine)
+                {
+                    cost.Clear();
+
+                    if (informations[line].Contains("Rubis"))
+                    {
+                        string resultString = Regex.Match(informations[line], @"\d+").Value;
+
+                        Int32.Parse(resultString);
+
+                        cost.Add(resultString);
+
+                        CostCard.Add(cost);
+                    }
+
+                    if (informations[line].Contains("Emeraude"))
+                    {
+                        string resultString = Regex.Match(informations[line], @"\d+").Value;
+
+                        Int32.Parse(resultString);
+
+                        cost.Add(resultString);
+
+                        CostCard.Add(cost);
+                    }
+
+                    if (informations[line].Contains("Onyx"))
+                    {
+                        string resultString = Regex.Match(informations[line], @"\d+").Value;
+
+                        Int32.Parse(resultString);
+
+                        cost.Add(resultString);
+
+                        CostCard.Add(cost);
+                    }
+
+                    if (informations[line].Contains("Saphir"))
+                    {
+                        string resultString = Regex.Match(informations[line], @"\d+").Value;
+
+                        Int32.Parse(resultString);
+
+                        cost.Add(resultString);
+
+                        CostCard.Add(cost);
+                    }
+
+                    if (informations[line].Contains("Diamand"))
+                    {
+                        string resultString = Regex.Match(informations[line], @"\d+").Value;
+
+                        Int32.Parse(resultString);
+
+                        cost.Add(resultString);
+
+                        CostCard.Add(cost);
+                    }
+                    
+                    line++;
+                }
+
+                DialogResult dialogResult = MessageBox.Show(txtBox.Text, "Voulez-vous acheter la carte?", MessageBoxButtons.YesNo);
+                if (dialogResult == DialogResult.Yes)
+                {
+                    string Ressource = ressources[0];
+
+                    switch (Ressource)
+                    {
+
+                        case "Rubis":
+                            List<string> cardBought = new List<string>();
+                            List<List<string>> cardBoughtDetail = new List<List<string>>();
+
+                            cardBought.Add(ressources[0]);
+
+                            cardBoughtDetail.Add(cardBought);
+                            //cardBoughtDetail.Add(CostCard);
+
+                                     
+                            //RubisCard.Add();
+                            break;
+
+
+                    }
+                }
+                else if (dialogResult == DialogResult.No)
+                {
+                    //do something else
+                }
+
+
+
+                //get the text displayed in the textbox that has been clicked
+            }
+
+
         }
 
         /// <summary>
@@ -518,6 +671,9 @@ namespace Splendor
                 lblRubisCoin.Text = var.ToString();
                 lblChoiceRubis.Text = nbRubis + "\r\n";
             }
+
+            currentPlayerId = (currentPlayerId % 3) + 1;
+
             
             if(nbtotal == 0)
             {
