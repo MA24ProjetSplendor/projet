@@ -204,9 +204,7 @@ namespace Splendor
         {
             SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
             command.ExecuteNonQuery();
-
         }
-
 
         /// <summary>
         ///  create tables "cards", "cost", "ressource" and insert data

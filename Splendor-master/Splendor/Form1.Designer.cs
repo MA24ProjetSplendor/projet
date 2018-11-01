@@ -165,7 +165,9 @@
             // 
             this.txtLevel31.Location = new System.Drawing.Point(320, 2);
 
+
             //this.txtLevel31.Margin = new System.Windows.Forms.Padding(2);
+
 
             this.txtLevel31.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
 
@@ -178,7 +180,10 @@
             // 
             this.txtLevel32.Location = new System.Drawing.Point(214, 2);
 
+
             //this.txtLevel32.Margin = new System.Windows.Forms.Padding(2);
+
+
 
             this.txtLevel32.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
 
@@ -191,7 +196,9 @@
             // 
             this.txtLevel33.Location = new System.Drawing.Point(108, 2);
 
+
             //this.txtLevel33.Margin = new System.Windows.Forms.Padding(2);
+
 
             this.txtLevel33.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
 
@@ -204,7 +211,10 @@
             // 
             this.txtLevel34.Location = new System.Drawing.Point(2, 2);
 
+
             //this.txtLevel34.Margin = new System.Windows.Forms.Padding(2);
+
+
 
             this.txtLevel34.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
 
@@ -217,7 +227,9 @@
             // 
             this.txtLevel21.Location = new System.Drawing.Point(320, 2);
 
+
             //this.txtLevel21.Margin = new System.Windows.Forms.Padding(2);
+
 
             this.txtLevel21.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
 
@@ -230,7 +242,9 @@
             // 
             this.txtLevel22.Location = new System.Drawing.Point(214, 2);
 
+
             //this.txtLevel22.Margin = new System.Windows.Forms.Padding(2);
+
 
             this.txtLevel22.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
 
@@ -247,6 +261,8 @@
 
             this.txtLevel23.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
 
+            this.txtLevel23.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+
             this.txtLevel23.Multiline = true;
             this.txtLevel23.Name = "txtLevel23";
             this.txtLevel23.Size = new System.Drawing.Size(102, 98);
@@ -255,6 +271,7 @@
             // txtLevel24
             // 
             this.txtLevel24.Location = new System.Drawing.Point(2, 2);
+
 
             //this.txtLevel24.Margin = new System.Windows.Forms.Padding(2);
 
@@ -304,7 +321,9 @@
             // 
             this.txtLevel14.Location = new System.Drawing.Point(320, 2);
 
+
             //this.txtLevel14.Margin = new System.Windows.Forms.Padding(2);
+
 
             this.txtLevel14.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
 
@@ -317,7 +336,9 @@
             // 
             this.cmdInsertPlayer.Location = new System.Drawing.Point(501, 153);
 
+
             //this.cmdInsertPlayer.Margin = new System.Windows.Forms.Padding(2);
+
 
             this.cmdInsertPlayer.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
 
@@ -332,7 +353,9 @@
             // 
             this.cmdPlay.Location = new System.Drawing.Point(501, 211);
 
+
             //this.cmdPlay.Margin = new System.Windows.Forms.Padding(2);
+
 
             this.cmdPlay.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
 
@@ -348,6 +371,7 @@
             this.txtPlayerEmeraudeCard.ForeColor = System.Drawing.Color.Green;
             this.txtPlayerEmeraudeCard.Location = new System.Drawing.Point(380, 624);
 
+
             //this.txtPlayerEmeraudeCard.Margin = new System.Windows.Forms.Padding(2);
 
             this.txtPlayerEmeraudeCard.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
@@ -361,7 +385,9 @@
             // 
             this.txtPlayerOnyxCard.Location = new System.Drawing.Point(260, 624);
 
+
             //this.txtPlayerOnyxCard.Margin = new System.Windows.Forms.Padding(2);
+
 
             this.txtPlayerOnyxCard.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
 
@@ -374,6 +400,7 @@
             // 
             this.txtPlayerSaphirCard.ForeColor = System.Drawing.SystemColors.HotTrack;
             this.txtPlayerSaphirCard.Location = new System.Drawing.Point(140, 624);
+
 
             //this.txtPlayerSaphirCard.Margin = new System.Windows.Forms.Padding(2);
 
@@ -389,7 +416,9 @@
             this.txtPlayerRubisCard.ForeColor = System.Drawing.Color.Red;
             this.txtPlayerRubisCard.Location = new System.Drawing.Point(20, 624);
 
+
             //this.txtPlayerRubisCard.Margin = new System.Windows.Forms.Padding(2);
+
 
             this.txtPlayerRubisCard.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
 
@@ -474,7 +503,9 @@
             // 
             this.txtPlayerBookedCard.Location = new System.Drawing.Point(503, 374);
 
+
             //this.txtPlayerBookedCard.Margin = new System.Windows.Forms.Padding(2);
+
 
             this.txtPlayerBookedCard.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
 
@@ -489,6 +520,7 @@
             this.txtPlayerDiamandCard.Location = new System.Drawing.Point(502, 624);
 
             //this.txtPlayerDiamandCard.Margin = new System.Windows.Forms.Padding(2);
+
 
             this.txtPlayerDiamandCard.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
 
@@ -566,7 +598,9 @@
             // 
             this.cmdValidateChoice.Location = new System.Drawing.Point(20, 554);
 
+
             //this.cmdValidateChoice.Margin = new System.Windows.Forms.Padding(2);
+
 
             this.cmdValidateChoice.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
 
@@ -581,7 +615,9 @@
             // 
             this.cmdNextPlayer.Location = new System.Drawing.Point(135, 554);
 
+
             //this.cmdNextPlayer.Margin = new System.Windows.Forms.Padding(2);
+
 
             this.cmdNextPlayer.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
 
@@ -616,7 +652,9 @@
             // 
             this.txtNoble4.Location = new System.Drawing.Point(2, 2);
 
+
             //this.txtNoble4.Margin = new System.Windows.Forms.Padding(2);
+
 
             this.txtNoble4.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
 
@@ -628,6 +666,7 @@
             // txtNoble3
             // 
             this.txtNoble3.Location = new System.Drawing.Point(108, 2);
+
 
             //this.txtNoble3.Margin = new System.Windows.Forms.Padding(2);
 
@@ -642,7 +681,9 @@
             // 
             this.txtNoble2.Location = new System.Drawing.Point(214, 2);
 
+
             //this.txtNoble2.Margin = new System.Windows.Forms.Padding(2);
+
 
             this.txtNoble2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
 
@@ -655,7 +696,9 @@
             // 
             this.txtNoble1.Location = new System.Drawing.Point(320, 2);
 
+
             //this.txtNoble1.Margin = new System.Windows.Forms.Padding(2);
+
 
             this.txtNoble1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
 
@@ -682,7 +725,9 @@
             this.flwCardLevel1.Controls.Add(this.txtLevel14);
             this.flwCardLevel1.Location = new System.Drawing.Point(14, 374);
 
+
             //this.flwCardLevel1.Margin = new System.Windows.Forms.Padding(2);
+
 
             this.flwCardLevel1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
 
@@ -698,7 +743,9 @@
             this.flwCardLevel2.Controls.Add(this.txtLevel21);
             this.flwCardLevel2.Location = new System.Drawing.Point(14, 257);
 
+
             //this.flwCardLevel2.Margin = new System.Windows.Forms.Padding(2);
+
 
             this.flwCardLevel2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
 
@@ -714,7 +761,9 @@
             this.flwCardLevel3.Controls.Add(this.txtLevel31);
             this.flwCardLevel3.Location = new System.Drawing.Point(14, 145);
 
+
             //this.flwCardLevel3.Margin = new System.Windows.Forms.Padding(2);
+
 
             this.flwCardLevel3.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
 
@@ -729,6 +778,7 @@
             this.flwCardNoble.Controls.Add(this.txtNoble2);
             this.flwCardNoble.Controls.Add(this.txtNoble1);
             this.flwCardNoble.Location = new System.Drawing.Point(14, 37);
+
 
             //this.flwCardNoble.Margin = new System.Windows.Forms.Padding(2);
 
@@ -797,7 +847,7 @@
             this.Controls.Add(this.lblRubisCoin);
             this.Controls.Add(this.lblGoldCoin);
 
-            //this.Margin = new System.Windows.Forms.Padding(2);
+
 
             this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
 
