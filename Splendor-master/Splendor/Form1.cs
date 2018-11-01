@@ -29,14 +29,14 @@ namespace Splendor
     public partial class frmSplendor : Form
     {
         //used to store the number of coins selected for the current round of game
-        private int nbRubis;
+        public int nbRubis;
         private int nbOnyx;
         private int nbEmeraude;
         private int nbDiamand;
         private int nbSaphir;
         private int nbtotal;
 
-        private const int maxSameCoin = 2;
+        
 
         //id of the player that is playing
         private int currentPlayerId;
@@ -336,6 +336,7 @@ namespace Splendor
         /// <param name="id">identifier of the player</param>
         private void LoadPlayer(int id)
         {
+           
 
             enableClicLabel = true;
 
@@ -361,7 +362,7 @@ namespace Splendor
             player.Name = name;
             player.Id = id;
             player.Ressources = new int[] { 2, 0, 1, 1, 1 };
-            player.Coins = new int[] { 1, 1, 1, 1, 1 };
+            player.Coins = new int[] { 0, 0, 0, 0, 0 };
 
             lblPlayerDiamandCoin.Text = player.Coins[0].ToString();
             lblPlayerOnyxCoin.Text = player.Coins[1].ToString();
@@ -374,10 +375,15 @@ namespace Splendor
 
             cmdPlay.Enabled = false;
         }
-
-        void TestJetons(string labelChoix, string labelJeton, int nbJeton) //method test des jetons
+     
+        void TestJetons(Label labelChoix, Label labelJeton, int nbJeton) //method test des jetons
         {
-            if (labelJeton == "2" && nbSaphir == 1)
+
+            int jeton = Convert.ToInt32(labelJeton.Text);
+
+            const int maxSameCoin = 2;
+            
+            if (jeton == 2 && nbJeton == 1)
             {
                 MessageBox.Show("Vous ne pouvez pas prendre deux jetons de cette couleur");
             }
@@ -389,59 +395,27 @@ namespace Splendor
                 }
                 else
                 {
-                    if (nbJeton == nbRubis)
+                    if ((nbJeton == 1 && nbSaphir == 1) || (nbJeton == 1 && nbOnyx == 1) || (nbJeton == 1 && nbEmeraude == 1) || (nbJeton == 1 && nbDiamand == 1))
                     {
-                        if ((nbJeton == 1 && nbSaphir == 1) || (nbJeton == 1 && nbOnyx == 1) || (nbJeton == 1 && nbEmeraude == 1) || (nbJeton == 1 && nbDiamand == 1))
-                        {
-                            MessageBox.Show("Vous ne pouvez pas prendre un deuxiéme jeton de la même couleur si vous avez déjà choisi un jeton de couleur différente");
-                        }
+                        MessageBox.Show("Vous ne pouvez pas prendre un deuxiéme jeton de la même couleur si vous avez déjà choisi un jeton de couleur différente");
                     }
-                    else if (nbJeton == nbSaphir)
+
+                    nbtotal = nbRubis + nbSaphir + nbOnyx + nbEmeraude + nbDiamand;
+                    if (nbtotal >= 3)
                     {
-                        if ((nbJeton == 1 && nbRubis == 1) || (nbJeton == 1 && nbOnyx == 1) || (nbJeton == 1 && nbEmeraude == 1) || (nbJeton == 1 && nbDiamand == 1))
-                        {
-                            MessageBox.Show("Vous ne pouvez pas prendre un deuxiéme jeton de la même couleur si vous avez déjà choisi un jeton de couleur différente");
-                        }
-                    }
-                    else if (nbJeton == nbOnyx)
-                    {
-                        if ((nbJeton == 1 && nbRubis == 1) || (nbJeton == 1 && nbSaphir == 1) || (nbJeton == 1 && nbEmeraude == 1) || (nbJeton == 1 && nbDiamand == 1))
-                        {
-                            MessageBox.Show("Vous ne pouvez pas prendre un deuxiéme jeton de la même couleur si vous avez déjà choisi un jeton de couleur différente");
-                        }
-                    }
-                    else if (nbJeton == nbEmeraude)
-                    {
-                        if ((nbJeton == 1 && nbRubis == 1) || (nbJeton == 1 && nbSaphir == 1) || (nbJeton == 1 && nbOnyx == 1) || (nbJeton == 1 && nbDiamand == 1))
-                        {
-                            MessageBox.Show("Vous ne pouvez pas prendre un deuxiéme jeton de la même couleur si vous avez déjà choisi un jeton de couleur différente");
-                        }
-                    }
-                    else if (nbJeton == nbDiamand)
-                    {
-                        if ((nbJeton == 1 && nbRubis == 1) || (nbJeton == 1 && nbSaphir == 1) || (nbJeton == 1 && nbOnyx == 1) || (nbJeton == 1 && nbEmeraude == 1))
-                        {
-                            MessageBox.Show("Vous ne pouvez pas prendre un deuxiéme jeton de la même couleur si vous avez déjà choisi un jeton de couleur différente");
-                        }
+                        MessageBox.Show("Vous ne pouvez pas prendre plus de jetons");
                     }
                     else
                     {
-                        nbtotal = nbRubis + nbSaphir + nbOnyx + nbEmeraude + nbDiamand;
-                        if (nbtotal >= 3)
-                        {
-                            MessageBox.Show("Vous ne pouvez pas prendre plus de jetons");
-                        }
-                        else
-                        {
-                            nbJeton++;
-                            int nbJetonsDispo = Convert.ToInt32(lblSaphirCoin.Text) - 1;
-                            labelJeton = nbJetonsDispo.ToString();
-                            labelChoix = nbJeton + "\r\n";
-                        }
-                    }
+                        nbJeton++;
+                        int nbJetonsDispo = jeton--;
+                        labelJeton.Text = nbJetonsDispo.ToString();
+                        labelChoix.Text = nbJeton + "\r\n";
 
+                    }
                 }
             }
+            
         }
 
         /// <summary>
@@ -456,7 +430,9 @@ namespace Splendor
                 cmdValidateChoice.Visible = true;
                 lblChoiceRubis.Visible = true;
 
-                TestJetons("lblChoiceRubis.Text", "lblRubisCoin.Text", nbRubis);
+
+                //ChoiceToken("Rubis");
+                TestJetons(lblChoiceRubis, lblRubisCoin, nbRubis);
 
             }
         }
@@ -472,8 +448,46 @@ namespace Splendor
             {
                 cmdValidateChoice.Visible = true;
                 lblChoiceSaphir.Visible = true;
+                if (enableClicLabel)
+                {
+                    int var = Convert.ToInt32(lblSaphirCoin.Text);
+                    cmdValidateChoice.Visible = true;
+                    lblChoiceSaphir.Visible = true;
 
-                TestJetons(lblChoiceSaphir.Text, lblSaphirCoin.Text, nbSaphir);
+                    if (var == 2 && nbSaphir == 1)
+                    {
+                        MessageBox.Show("Vous pouvez prendre 2 jetons de la même couleur uniquement à condition qu'il en reste au moin 4 dans la pile");
+                    }
+                    else
+                    {
+                        if (nbSaphir == 2 || nbRubis == 2 || nbOnyx == 2 || nbEmeraude == 2 || nbDiamand == 2)
+                        {
+                            MessageBox.Show("Vous ne pouvez pas prendre ce jeton car vous en avez déja pris 2 de la même pierre précieuse");
+                        }
+                        else
+                        {
+                            if ((nbSaphir == 1 && nbRubis == 1) || (nbSaphir == 1 && nbOnyx == 1) || (nbSaphir == 1 && nbEmeraude == 1) || (nbSaphir == 1 && nbDiamand == 1))
+                            {
+                                MessageBox.Show("Vous ne pouvez pas prendre 2 jetons de la même pierre précieuse si vous en avez déja pris un d'une autre pierre précieuse");
+                            }
+                            else
+                            {
+                                nbtotal = nbRubis + nbSaphir + nbOnyx + nbEmeraude + nbDiamand;
+                                if (nbtotal >= 3)
+                                {
+                                    MessageBox.Show("Vous avez pris le nombre de jetons maximum");
+                                }
+                                else
+                                {
+                                    nbSaphir++;
+                                    var--;
+                                    lblSaphirCoin.Text = var.ToString();
+                                    lblChoiceSaphir.Text = nbSaphir + "\r\n";
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
 
@@ -489,7 +503,7 @@ namespace Splendor
                 cmdValidateChoice.Visible = true;
                 lblChoiceOnyx.Visible = true;
 
-                TestJetons(lblChoiceOnyx.Text, lblOnyxCoin.Text, nbOnyx);
+                //TestJetons(lblChoiceOnyx.Text, lblOnyxCoin.Text, nbOnyx);
 
             }
         }
@@ -506,7 +520,7 @@ namespace Splendor
                 cmdValidateChoice.Visible = true;
                 lblChoiceEmeraude.Visible = true;
 
-                TestJetons(lblChoiceEmeraude.Text, lblEmeraudeCoin.Text, nbEmeraude);
+                //TestJetons(lblChoiceEmeraude.Text, lblEmeraudeCoin.Text, nbEmeraude);
             }
         }
 
@@ -522,7 +536,7 @@ namespace Splendor
                 cmdValidateChoice.Visible = true;
                 lblChoiceDiamand.Visible = true;
 
-                TestJetons(lblChoiceDiamand.Text, lblDiamandCoin.Text, nbDiamand);
+                //TestJetons(lblChoiceDiamand.Text, lblDiamandCoin.Text, nbDiamand);
             }
         }
 
@@ -538,8 +552,6 @@ namespace Splendor
             //TO DO Check if card or coins are selected, impossible to do both at the same time
 
             cmdNextPlayer.Enabled = true;
-
-
         }
 
         /// <summary>
