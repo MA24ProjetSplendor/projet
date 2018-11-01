@@ -329,15 +329,12 @@ namespace Splendor
 
         }
 
-
         /// <summary>
         /// load data about the current player
         /// </summary>
         /// <param name="id">identifier of the player</param>
         private void LoadPlayer(int id)
-        {
-           
-
+        {     
             enableClicLabel = true;
 
             string name = conn.GetPlayerName(currentPlayerId);
@@ -376,7 +373,13 @@ namespace Splendor
             cmdPlay.Enabled = false;
         }
      
-        void TestJetons(Label labelChoix, Label labelJeton, int nbJeton) //method test des jetons
+        /// <summary>
+        /// </summary>
+        /// <param name="labelChoix"></param>
+        /// <param name="labelJeton"></param>
+        /// <param name="nbJeton"></param>
+        /// <param name="type"></param>
+        void TestJetons(Label labelChoix, Label labelJeton, int nbJeton, string type) //method test des jetons
         {
 
             int jeton = Convert.ToInt32(labelJeton.Text);
@@ -408,10 +411,23 @@ namespace Splendor
                     else
                     {
                         nbJeton++;
-                        int nbJetonsDispo = jeton--;
+                        int nbJetonsDispo = jeton-1;
                         labelJeton.Text = nbJetonsDispo.ToString();
                         labelChoix.Text = nbJeton + "\r\n";
 
+                        switch(type)
+                        {
+                            case "Rubis": nbRubis++; break;
+
+                            case "Saphir": nbSaphir++; break;
+
+                            case "Emeraude": nbEmeraude++; break;
+
+                            case "Onyx": nbOnyx++; break;
+
+                            case "Diamand": nbDiamand++; break;
+
+                        }   
                     }
                 }
             }
@@ -430,9 +446,7 @@ namespace Splendor
                 cmdValidateChoice.Visible = true;
                 lblChoiceRubis.Visible = true;
 
-
-                //ChoiceToken("Rubis");
-                TestJetons(lblChoiceRubis, lblRubisCoin, nbRubis);
+                TestJetons(lblChoiceRubis, lblRubisCoin, nbRubis,"Rubis");
 
             }
         }
@@ -448,49 +462,10 @@ namespace Splendor
             {
                 cmdValidateChoice.Visible = true;
                 lblChoiceSaphir.Visible = true;
-                if (enableClicLabel)
-                {
-                    int var = Convert.ToInt32(lblSaphirCoin.Text);
-                    cmdValidateChoice.Visible = true;
-                    lblChoiceSaphir.Visible = true;
-
-                    if (var == 2 && nbSaphir == 1)
-                    {
-                        MessageBox.Show("Vous pouvez prendre 2 jetons de la même couleur uniquement à condition qu'il en reste au moin 4 dans la pile");
-                    }
-                    else
-                    {
-                        if (nbSaphir == 2 || nbRubis == 2 || nbOnyx == 2 || nbEmeraude == 2 || nbDiamand == 2)
-                        {
-                            MessageBox.Show("Vous ne pouvez pas prendre ce jeton car vous en avez déja pris 2 de la même pierre précieuse");
-                        }
-                        else
-                        {
-                            if ((nbSaphir == 1 && nbRubis == 1) || (nbSaphir == 1 && nbOnyx == 1) || (nbSaphir == 1 && nbEmeraude == 1) || (nbSaphir == 1 && nbDiamand == 1))
-                            {
-                                MessageBox.Show("Vous ne pouvez pas prendre 2 jetons de la même pierre précieuse si vous en avez déja pris un d'une autre pierre précieuse");
-                            }
-                            else
-                            {
-                                nbtotal = nbRubis + nbSaphir + nbOnyx + nbEmeraude + nbDiamand;
-                                if (nbtotal >= 3)
-                                {
-                                    MessageBox.Show("Vous avez pris le nombre de jetons maximum");
-                                }
-                                else
-                                {
-                                    nbSaphir++;
-                                    var--;
-                                    lblSaphirCoin.Text = var.ToString();
-                                    lblChoiceSaphir.Text = nbSaphir + "\r\n";
-                                }
-                            }
-                        }
-                    }
-                }
+                TestJetons(lblChoiceSaphir, lblSaphirCoin, nbSaphir, "Saphir");
             }
         }
-
+        
         /// <summary>
         /// click on the black coin (onyx) to tell the player has selected this coin
         /// </summary>
@@ -502,9 +477,7 @@ namespace Splendor
             {
                 cmdValidateChoice.Visible = true;
                 lblChoiceOnyx.Visible = true;
-
-                //TestJetons(lblChoiceOnyx.Text, lblOnyxCoin.Text, nbOnyx);
-
+                TestJetons(lblChoiceOnyx, lblOnyxCoin, nbOnyx, "Onyx");
             }
         }
 
@@ -519,8 +492,7 @@ namespace Splendor
             {
                 cmdValidateChoice.Visible = true;
                 lblChoiceEmeraude.Visible = true;
-
-                //TestJetons(lblChoiceEmeraude.Text, lblEmeraudeCoin.Text, nbEmeraude);
+                TestJetons(lblChoiceEmeraude, lblEmeraudeCoin, nbEmeraude, "Emeraude");
             }
         }
 
@@ -535,8 +507,7 @@ namespace Splendor
             {
                 cmdValidateChoice.Visible = true;
                 lblChoiceDiamand.Visible = true;
-
-                //TestJetons(lblChoiceDiamand.Text, lblDiamandCoin.Text, nbDiamand);
+                TestJetons(lblChoiceDiamand, lblDiamandCoin, nbDiamand, "Diamand");
             }
         }
 
@@ -548,10 +519,24 @@ namespace Splendor
         private void cmdValidateChoice_Click(object sender, EventArgs e)
         {
             cmdNextPlayer.Visible = true;
-
             //TO DO Check if card or coins are selected, impossible to do both at the same time
-
             cmdNextPlayer.Enabled = true;
+
+            if(nbRubis > 0 || nbSaphir > 0 || nbOnyx > 0 || nbDiamand > 0 || nbEmeraude > 0)
+            {
+
+
+
+            }
+
+            
+
+
+
+
+
+
+
         }
 
         /// <summary>
