@@ -43,7 +43,7 @@ namespace Splendor
         /// get the list of cards according to the level
         /// </summary>
         /// <returns>cards stack</returns>
-        /*public Stack<Card> GetListCardAccordingToLevel(int level)
+        public Stack<Card> GetListCardAccordingToLevel(int level)
         {
             //Get all the data from card table selecting them according to the data
             string sql = "select * from card where level=" + level;
@@ -92,7 +92,7 @@ namespace Splendor
 
             //}
             return listCard;
-        }*/
+        }
 
 
         /// <summary>
