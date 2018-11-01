@@ -187,6 +187,7 @@ namespace Splendor
         /// </summary>
         private void CreateInsertRessources()
         {
+
             InsertInto("CREATE TABLE ressource (idRessource INT PRIMARY KEY, Nom STRING)");
             
             // Insérer les données dans la table Ressource
