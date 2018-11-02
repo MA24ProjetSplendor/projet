@@ -549,8 +549,18 @@ namespace Splendor
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
+        /// 
+
+        //a terminer 
         private void cmdInsertPlayer_Click(object sender, EventArgs e)
         {
+            lblNewPlayer.Visible = true;
+            txtNewPlayer.Visible = true;
+
+            string name = txtNewPlayer.Text;
+
+            conn.CreateNewPlayer(name);
+
             MessageBox.Show("A implémenter");
         }
 
