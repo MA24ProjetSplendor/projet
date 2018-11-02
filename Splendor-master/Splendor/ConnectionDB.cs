@@ -47,6 +47,24 @@ namespace Splendor
             SQLiteDataReader reader = command.ExecuteReader();
         }
 
+        public Player CreatePlayer()
+        {
+            Player p = new Player();
+
+            string sql = "select * from player";
+            SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
+            SQLiteDataReader reader = command.ExecuteReader();
+
+            while (reader.Read())
+            {
+                p.Name = (string)reader["pseudo"];
+                p.Id = (int)reader["id"];
+            }
+
+            return p;
+
+        }
+
 
         public int[] GetPlayerCoin(int id)
         {
@@ -67,22 +85,69 @@ namespace Splendor
             }
 
             return coins;
+ 
+        }
 
-
-           /* int NbPlayers = (Int32)command.ExecuteScalar();
-
-            for(int i=0;i<=NbPlayers;i++)
+        public void SetNbCoin(int idPlayer, int[] CoinsPlayer)
+        {  
+            for (int j = 0; j < CoinsPlayer.Length; j++)
             {
+                if (CoinsPlayer[j] > 0)
+                {
+                    string sql = "update NbCoin set nbCoin = " + CoinsPlayer[j] + "where fkPlayer="+idPlayer;
+                    SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
+                }
+            }
+        }
 
-                coins[i] = 
+        public int GetIdPlayer(string Name)
+        {
+            string sql = "select id from player where pseudo = "+Name;
+            SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
+
+            return command.ExecuteNonQuery();
+
+        }
+
+        public int InitializeCoins()
+        {
+            int nb = 0;
+            string sql = "select * from player";
+            SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
+            SQLiteDataReader reader = command.ExecuteReader();
+
+            while (reader.Read())
+            {
+                nb++;
+            }
+
+            for (int i = 0; i <= nb; i++)
+            {
+                for (int c = 0; c <= 5; c++)
+                {
+                    string sql1 = "INSERT INTO NbCoin(fkPlayer, fkressource, nbCoin) VALUES(" + i + ",'" + c + "' 0 )";
+                    SQLiteCommand command1 = new SQLiteCommand(sql, m_dbConnection);
+                    SQLiteDataReader reader1 = command.ExecuteReader();
+                }
+            }
+
+            return nb;
+        }
 
 
+        public int GetNumberPlayer()
+        {
+            int nb = 0;
+            string sql = "select * from player";
+            SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
+            SQLiteDataReader reader = command.ExecuteReader();
 
+            while(reader.Read())
+            {
+                nb++;
+            }
 
-                string insertCoin = "insert into NbCoin(NbCoin) VALUES(0) where FkPlayer ="+i;
-                SQLiteCommand cmd = new SQLiteCommand(insertCoin, m_dbConnection);
-            }*/
-       
+            return nb;      
         }
 
 

@@ -35,6 +35,7 @@ namespace Splendor
         private int nbDiamand;
         private int nbSaphir;
         private int nbtotal;
+        private int[] CoinsPlayer = new int[5];
 
         
 
@@ -355,6 +356,10 @@ namespace Splendor
             nbSaphir = 0;
             nbEmeraude = 0;
 
+            // Create player
+            Player p = conn.CreatePlayer();
+
+            /*
             Player player = new Player();
             player.Name = name;
             player.Id = id;
@@ -366,7 +371,7 @@ namespace Splendor
             lblPlayerRubisCoin.Text = player.Coins[2].ToString();
             lblPlayerSaphirCoin.Text = player.Coins[3].ToString();
             lblPlayerEmeraudeCoin.Text = player.Coins[4].ToString();
-            currentPlayerId = id;
+            currentPlayerId = id;*/
 
             lblPlayer.Text = "Jeu de " + name;
 
@@ -417,15 +422,15 @@ namespace Splendor
 
                         switch(type)
                         {
-                            case "Rubis": nbRubis++; break;
+                            case "Rubis": nbRubis++; CoinsPlayer[0]++; break;
 
-                            case "Saphir": nbSaphir++; break;
+                            case "Saphir": nbSaphir++; CoinsPlayer[1]++; break;
 
-                            case "Emeraude": nbEmeraude++; break;
+                            case "Emeraude": nbEmeraude++; CoinsPlayer[2]++; break;
 
-                            case "Onyx": nbOnyx++; break;
+                            case "Onyx": nbOnyx++; CoinsPlayer[3]++; break;
 
-                            case "Diamand": nbDiamand++; break;
+                            case "Diamand": nbDiamand++; CoinsPlayer[4]++; break;
 
                         }   
                     }
@@ -522,19 +527,7 @@ namespace Splendor
             //TO DO Check if card or coins are selected, impossible to do both at the same time
             cmdNextPlayer.Enabled = true;
 
-            if(nbRubis > 0 || nbSaphir > 0 || nbOnyx > 0 || nbDiamand > 0 || nbEmeraude > 0)
-            {
-
-
-
-            }
-
             
-
-
-
-
-
 
 
         }
@@ -556,12 +549,15 @@ namespace Splendor
         /// <param name="e"></param>
         private void cmdNextPlayer_Click(object sender, EventArgs e)
         {
+
             //TO DO in release 1.0 : 3 is hard coded (number of players for the game), it shouldn't. 
             //TO DO Get the id of the player : in release 0.1 there are only 3 players
             //Reload the data of the player
             //We are not allowed to click on the next button
 
         }
+
+       
 
         private void lblChoiceRubis_Click(object sender, EventArgs e)
         {
