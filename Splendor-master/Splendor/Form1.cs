@@ -556,6 +556,7 @@ namespace Splendor
         {
             lblNewPlayer.Visible = true;
             txtNewPlayer.Visible = true;
+            cmdValiderNewPlayer.Visible = true;
 
             string name = txtNewPlayer.Text;
 

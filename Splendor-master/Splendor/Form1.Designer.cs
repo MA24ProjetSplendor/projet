@@ -80,7 +80,7 @@
             this.flwCardNoble = new System.Windows.Forms.FlowLayoutPanel();
             this.lblNewPlayer = new System.Windows.Forms.Label();
             this.txtNewPlayer = new System.Windows.Forms.TextBox();
-            this.button1 = new System.Windows.Forms.Button();
+            this.cmdValiderNewPlayer = new System.Windows.Forms.Button();
             this.flwCardLevel1.SuspendLayout();
             this.flwCardLevel2.SuspendLayout();
             this.flwCardLevel3.SuspendLayout();
@@ -644,21 +644,22 @@
             this.txtNewPlayer.TabIndex = 52;
             this.txtNewPlayer.Visible = false;
             // 
-            // button1
+            // cmdValiderNewPlayer
             // 
-            this.button1.Location = new System.Drawing.Point(0, 0);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 53;
-            this.button1.Text = "button1";
-            this.button1.UseVisualStyleBackColor = true;
+            this.cmdValiderNewPlayer.Location = new System.Drawing.Point(504, 143);
+            this.cmdValiderNewPlayer.Name = "cmdValiderNewPlayer";
+            this.cmdValiderNewPlayer.Size = new System.Drawing.Size(75, 23);
+            this.cmdValiderNewPlayer.TabIndex = 53;
+            this.cmdValiderNewPlayer.Text = "Valider";
+            this.cmdValiderNewPlayer.UseVisualStyleBackColor = true;
+            this.cmdValiderNewPlayer.Visible = false;
             // 
             // frmSplendor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(606, 763);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.cmdValiderNewPlayer);
             this.Controls.Add(this.txtNewPlayer);
             this.Controls.Add(this.lblNewPlayer);
             this.Controls.Add(this.flwCardNoble);
@@ -766,7 +767,7 @@
         private System.Windows.Forms.TextBox txtLevel11;
         private System.Windows.Forms.Label lblNewPlayer;
         private System.Windows.Forms.TextBox txtNewPlayer;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button cmdValiderNewPlayer;
     }
 }
 

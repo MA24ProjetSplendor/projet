@@ -39,7 +39,6 @@ namespace Splendor
             //Create and insert Coin
             CreateInsertCoin();
             //Initialise la table des jetons des joueurs a 0
-            StartCoins();
         }
 
         private void CreateInsertCoin()
@@ -72,15 +71,6 @@ namespace Splendor
             }
 
             return nb;
-        }
-
-
-        private void StartCoins()
-        {
-            
-            string sql = "COUNT (*)";
-            SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
-            SQLiteDataReader reader = command.ExecuteReader();
         }
 
 
