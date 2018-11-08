@@ -308,10 +308,7 @@ namespace Splendor
                 else if (dialogResult == DialogResult.No)
                 {
                     //do something else
-                }
-
-
-
+                }   
                 //get the text displayed in the textbox that has been clicked
             }
 
@@ -439,6 +436,7 @@ namespace Splendor
                     {
                         MessageBox.Show("Vous ne pouvez pas prendre un deuxiéme jeton de la même couleur si vous avez déjà choisi un jeton de couleur différente");
                     }
+
              
                     if (nbtotal >= 3)
                     {
@@ -447,28 +445,68 @@ namespace Splendor
 
                     else
                     {
-                        nbJeton++;
-                        int nbJetonsDispo = jeton-1;
-                        labelJeton.Text = nbJetonsDispo.ToString();
-                        labelChoix.Text = nbJeton + "\r\n";
-
-                        switch(type)
+                        nbtotal = nbRubis + nbSaphir + nbOnyx + nbEmeraude + nbDiamand;
+                        if (nbtotal >= 3)
                         {
-                            case "Rubis": nbRubis++; nbtotal = nbSaphir + nbRubis + nbEmeraude + nbOnyx + nbDiamand; break;
+                            MessageBox.Show("Vous ne pouvez pas prendre plus de jetons");
+                        }
+                        else
+                        {
+                            nbJeton++;
+                            int nbJetonsDispo = jeton - 1;
+                            labelJeton.Text = nbJetonsDispo.ToString();
+                            labelChoix.Text = nbJeton + "\r\n";
 
-                            case "Saphir": nbSaphir++; nbtotal = nbSaphir + nbRubis + nbEmeraude + nbOnyx + nbDiamand; break;
+                            switch (type)
+                            {
+                                case "Rubis": nbRubis++; nbtotal = nbSaphir + nbRubis + nbEmeraude + nbOnyx + nbDiamand; break;
 
-                            case "Emeraude": nbEmeraude++; nbtotal = nbSaphir + nbRubis + nbEmeraude + nbOnyx + nbDiamand; break;
+                                case "Saphir": nbSaphir++; nbtotal = nbSaphir + nbRubis + nbEmeraude + nbOnyx + nbDiamand; break;
 
-                            case "Onyx": nbOnyx++; nbtotal = nbSaphir + nbRubis + nbEmeraude + nbOnyx + nbDiamand; break;
+                                case "Emeraude": nbEmeraude++; nbtotal = nbSaphir + nbRubis + nbEmeraude + nbOnyx + nbDiamand; break;
 
-                            case "Diamand": nbDiamand++; nbtotal = nbSaphir + nbRubis + nbEmeraude + nbOnyx + nbDiamand;  break;
+                                case "Onyx": nbOnyx++; nbtotal = nbSaphir + nbRubis + nbEmeraude + nbOnyx + nbDiamand; break;
 
-                        }   
+                                case "Diamand": nbDiamand++; nbtotal = nbSaphir + nbRubis + nbEmeraude + nbOnyx + nbDiamand; break;
+
+                            }
+                           
+
+                            }
+                        }
                     }
+                    
                 }
+            }           
+        
+
+        void ErreurJetonSelect()
+        {
+            nbRubis = nbRubis - 1;
+            int var = Convert.ToInt32(lblRubisCoin.Text) - 1;
+
+            if (nbRubis == 0)
+            {
+                lblChoiceRubis.Visible = false;
+                var = Convert.ToInt32(lblRubisCoin.Text) + 1;
+                lblRubisCoin.Text = var.ToString();
+
             }
-            
+            else
+            {
+                var = Convert.ToInt32(lblRubisCoin.Text) + 1;
+                lblRubisCoin.Text = var.ToString();
+                lblChoiceRubis.Text = nbRubis + "\r\n";
+            }
+
+
+            currentPlayerId = (currentPlayerId % 3) + 1;
+
+            if (nbtotal == 0)
+
+            {
+                cmdValidateChoice.Visible = false;
+            }
         }
 
         /// <summary>
@@ -493,12 +531,14 @@ namespace Splendor
         /// <param name="e"></param>
         void lblSaphirCoin_Click(object sender, EventArgs e)
         {
+
             if (enableClicLabel)
             {
                 cmdValidateChoice.Visible = true;
                 lblChoiceSaphir.Visible = true;
                 TestJetons(lblChoiceSaphir, lblSaphirCoin, nbSaphir, "Saphir");
             }
+   
         }
 
             /// <summary>
@@ -608,11 +648,7 @@ namespace Splendor
             txtNewPlayer.Visible = true;
             cmdValiderNewPlayer.Visible = true;
 
-            string name = txtNewPlayer.Text;
-
-            conn.CreateNewPlayer(name);
-
-            MessageBox.Show("A implémenter");
+            
         }
 
         /// <summary>
@@ -635,32 +671,7 @@ namespace Splendor
 
         void lblChoiceRubis_Click(object sender, EventArgs e)
         {
-            nbRubis = nbRubis - 1;
-            int var = Convert.ToInt32(lblRubisCoin.Text) - 1;
-
-            if (nbRubis == 0)
-            {
-                lblChoiceRubis.Visible = false;
-                var = Convert.ToInt32(lblRubisCoin.Text) + 1;
-                lblRubisCoin.Text = var.ToString();
-
-            }
-            else
-            {
-                var = Convert.ToInt32(lblRubisCoin.Text) + 1;
-                lblRubisCoin.Text = var.ToString();
-                lblChoiceRubis.Text = nbRubis + "\r\n";
-            }
-
-
-            currentPlayerId = (currentPlayerId % 3) + 1;
-
-            if (nbtotal == 0)
-
-            {
-                cmdValidateChoice.Visible = false;
-            }
-
+            ErreurJetonSelect();
         }
 
         void lblChoiceSaphir_Click(object sender, EventArgs e)
@@ -767,6 +778,28 @@ namespace Splendor
             }
         }
 
+
+        private void cmdValiderNewPlayer_Click(object sender, EventArgs e)
+        {
+            string name = txtNewPlayer.Text;
+
+            if(txtNewPlayer.Text == "")
+            {
+                MessageBox.Show("Le champ ne peut pas être vide");
+            }
+            else
+            {
+                conn.CreateNewPlayer(name);
+            }
+            
+
+            lblNewPlayer.Visible = false;
+            txtNewPlayer.Visible = false;
+            cmdValiderNewPlayer.Visible = false;
+
+
+
+        }
 
     }
 }

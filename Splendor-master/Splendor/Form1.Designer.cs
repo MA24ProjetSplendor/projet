@@ -653,6 +653,7 @@
             this.cmdValiderNewPlayer.Text = "Valider";
             this.cmdValiderNewPlayer.UseVisualStyleBackColor = true;
             this.cmdValiderNewPlayer.Visible = false;
+            this.cmdValiderNewPlayer.Click += new System.EventHandler(this.cmdValiderNewPlayer_Click);
             // 
             // frmSplendor
             // 
