@@ -35,21 +35,21 @@ namespace Splendor
         private int nbDiamand;
         private int nbSaphir;
         private int nbtotal;
-
-
+   
         private const int maxSameCoin = 2;
 
-        private int[] CoinsPlayer = new int[5];
 
-        
+        private List<Player> player = new List<Player>();
 
 
         //id of the player that is playing
-        private int currentPlayerId;
+        private int currentPlayerId=0;
         //boolean to enable us to know if the user can click on a coin or a card
         private bool enableClicLabel;
         //connection to the database
         private ConnectionDB conn;
+
+        Player p;
 
         /// <summary>
         /// constructor
@@ -59,6 +59,7 @@ namespace Splendor
             InitializeComponent();
         }
 
+        
         /// <summary>
         /// loads the form and initialize data in it
         /// </summary>
@@ -66,6 +67,8 @@ namespace Splendor
         /// <param name="e"></param>
         private void frmSplendor_Load(object sender, EventArgs e)
         {
+            conn = new ConnectionDB();
+           
 
             lblGoldCoin.Text = "5";
             lblDiamandCoin.Text = "7";
@@ -73,9 +76,6 @@ namespace Splendor
             lblOnyxCoin.Text = "7";
             lblRubisCoin.Text = "7";
             lblSaphirCoin.Text = "7";
-
-            conn = new ConnectionDB();
-
 
             // Get Player Coin
 
@@ -339,10 +339,32 @@ namespace Splendor
         /// </summary>
         /// <param name="id">identifier of the player</param>
         private void LoadPlayer(int id){
+            if(currentPlayerId >= player.Count())
+            {
+                currentPlayerId = 0;
+            }
+            string name = conn.GetPlayerName(currentPlayerId);
 
+            if(player.Count() < conn.GetNumberPlayer())
+            {
+                p = new Player();
+                player.Add(p);
+                p.Id = currentPlayerId;
+                p.Name = name;
+                p.Coins[0] = 0;
+                p.Coins[1] = 0;
+                p.Coins[2] = 0;
+                p.Coins[3] = 0;
+                p.Coins[4] = 0;
+               
+            }
+            
             enableClicLabel = true;
 
-            string name = conn.GetPlayerName(currentPlayerId);
+            if(currentPlayerId+1 > conn.GetNumberPlayer())
+            {
+                currentPlayerId = 0;
+            }
 
             //no coins or card selected yet, labels are empty
             lblChoiceDiamand.Text = "";
@@ -361,11 +383,14 @@ namespace Splendor
             nbEmeraude = 0;
 
             // Create player
-            Player p = conn.CreatePlayer();
 
+            lblPlayerRubisCoin.Text = player[currentPlayerId].Coins[0].ToString();  
+            lblPlayerEmeraudeCoin.Text = player[currentPlayerId].Coins[1].ToString();
+            lblPlayerOnyxCoin.Text = player[currentPlayerId].Coins[2].ToString();
+            lblPlayerSaphirCoin.Text = player[currentPlayerId].Coins[3].ToString();
+            lblPlayerDiamandCoin.Text = player[currentPlayerId].Coins[4].ToString();
 
-            
-
+            nbtotal = 0;
 
 
             /*
@@ -395,7 +420,7 @@ namespace Splendor
         /// <param name="type"></param>
         void TestJetons(Label labelChoix, Label labelJeton, int nbJeton, string type) //method test des jetons
         {
-
+            
             int jeton = Convert.ToInt32(labelJeton.Text);
 
             const int maxSameCoin = 2;
@@ -416,12 +441,12 @@ namespace Splendor
                     {
                         MessageBox.Show("Vous ne pouvez pas prendre un deuxiéme jeton de la même couleur si vous avez déjà choisi un jeton de couleur différente");
                     }
-
-                    nbtotal = nbRubis + nbSaphir + nbOnyx + nbEmeraude + nbDiamand;
+             
                     if (nbtotal >= 3)
                     {
                         MessageBox.Show("Vous ne pouvez pas prendre plus de jetons");
                     }
+
                     else
                     {
                         nbJeton++;
@@ -431,15 +456,15 @@ namespace Splendor
 
                         switch(type)
                         {
-                            case "Rubis": nbRubis++; CoinsPlayer[0]++; break;
+                            case "Rubis": nbRubis++; nbtotal = nbSaphir + nbRubis + nbEmeraude + nbOnyx + nbDiamand; break;
 
-                            case "Saphir": nbSaphir++; CoinsPlayer[1]++; break;
+                            case "Saphir": nbSaphir++; nbtotal = nbSaphir + nbRubis + nbEmeraude + nbOnyx + nbDiamand; break;
 
-                            case "Emeraude": nbEmeraude++; CoinsPlayer[2]++; break;
+                            case "Emeraude": nbEmeraude++; nbtotal = nbSaphir + nbRubis + nbEmeraude + nbOnyx + nbDiamand; break;
 
-                            case "Onyx": nbOnyx++; CoinsPlayer[3]++; break;
+                            case "Onyx": nbOnyx++; nbtotal = nbSaphir + nbRubis + nbEmeraude + nbOnyx + nbDiamand; break;
 
-                            case "Diamand": nbDiamand++; CoinsPlayer[4]++; break;
+                            case "Diamand": nbDiamand++; nbtotal = nbSaphir + nbRubis + nbEmeraude + nbOnyx + nbDiamand;  break;
 
                         }   
                     }
@@ -447,7 +472,6 @@ namespace Splendor
             }
             
         }
-
 
         /// <summary>
         /// click on the red coin (rubis) to tell the player has selected this coin
@@ -460,12 +484,7 @@ namespace Splendor
             {
                 cmdValidateChoice.Visible = true;
                 lblChoiceRubis.Visible = true;
-
-                //TestJetons(lblChoiceRubis, lblRubisCoin, nbRubis);
-
                 TestJetons(lblChoiceRubis, lblRubisCoin, nbRubis,"Rubis");
-
-
             }
         }
 
@@ -480,50 +499,7 @@ namespace Splendor
             {
                 cmdValidateChoice.Visible = true;
                 lblChoiceSaphir.Visible = true;
-
-                if (enableClicLabel)
-                {
-                    int var = Convert.ToInt32(lblSaphirCoin.Text);
-                    cmdValidateChoice.Visible = true;
-                    lblChoiceSaphir.Visible = true;
-
-                    if (var == 2 && nbSaphir == 1)
-                    {
-                        MessageBox.Show("Vous pouvez prendre 2 jetons de la même couleur uniquement à condition qu'il en reste au moin 4 dans la pile");
-                    }
-                    else
-                    {
-                        if (nbSaphir == 2 || nbRubis == 2 || nbOnyx == 2 || nbEmeraude == 2 || nbDiamand == 2)
-                        {
-                            MessageBox.Show("Vous ne pouvez pas prendre ce jeton car vous en avez déja pris 2 de la même pierre précieuse");
-                        }
-                        else
-                        {
-                            if ((nbSaphir == 1 && nbRubis == 1) || (nbSaphir == 1 && nbOnyx == 1) || (nbSaphir == 1 && nbEmeraude == 1) || (nbSaphir == 1 && nbDiamand == 1))
-                            {
-                                MessageBox.Show("Vous ne pouvez pas prendre 2 jetons de la même pierre précieuse si vous en avez déja pris un d'une autre pierre précieuse");
-                            }
-                            else
-                            {
-                                nbtotal = nbRubis + nbSaphir + nbOnyx + nbEmeraude + nbDiamand;
-                                if (nbtotal >= 3)
-                                {
-                                    MessageBox.Show("Vous avez pris le nombre de jetons maximum");
-                                }
-                                else
-                                {
-                                    nbSaphir++;
-                                    var--;
-                                    lblSaphirCoin.Text = var.ToString();
-                                    lblChoiceSaphir.Text = nbSaphir + "\r\n";
-                                }
-                            }
-                        }
-                    }
-                }
-
                 TestJetons(lblChoiceSaphir, lblSaphirCoin, nbSaphir, "Saphir");
-
             }
         }
 
@@ -534,20 +510,15 @@ namespace Splendor
             /// <param name="e"></param>
 
             void lblOnyxCoin_Click(object sender, EventArgs e)
-        {
-            if (enableClicLabel)
             {
-                cmdValidateChoice.Visible = true;
-                lblChoiceOnyx.Visible = true;
+                if (enableClicLabel)
+                {
+                    cmdValidateChoice.Visible = true;
+                    lblChoiceOnyx.Visible = true;
+                    TestJetons(lblChoiceOnyx, lblOnyxCoin, nbOnyx, "Onyx");
 
-
-                //TestJetons(lblChoiceOnyx.Text, lblOnyxCoin.Text, nbOnyx);
-
-
-                TestJetons(lblChoiceOnyx, lblOnyxCoin, nbOnyx, "Onyx");
-
+                }
             }
-        }
 
         /// <summary>
         /// click on the green coin (emeraude) to tell the player has selected this coin
@@ -560,12 +531,7 @@ namespace Splendor
             {
                 cmdValidateChoice.Visible = true;
                 lblChoiceEmeraude.Visible = true;
-
-
-                //TestJetons(lblChoiceEmeraude.Text, lblEmeraudeCoin.Text, nbEmeraude);
-
                 TestJetons(lblChoiceEmeraude, lblEmeraudeCoin, nbEmeraude, "Emeraude");
-
             }
         }
 
@@ -580,11 +546,7 @@ namespace Splendor
             {
                 cmdValidateChoice.Visible = true;
                 lblChoiceDiamand.Visible = true;
-
-                //TestJetons(lblChoiceDiamand.Text, lblDiamandCoin.Text, nbDiamand);
-
                 TestJetons(lblChoiceDiamand, lblDiamandCoin, nbDiamand, "Diamand");
-
             }
         }
 
@@ -595,12 +557,43 @@ namespace Splendor
         /// <param name="e"></param>
         void cmdValidateChoice_Click(object sender, EventArgs e)
         {
-            cmdNextPlayer.Visible = true;
+            if (nbtotal >= 2)
+            {
+                if (nbRubis > 0)
+                {
+                    p.Coins[0] = nbRubis;
+                }
 
-            //TO DO Check if card or coins are selected, impossible to do both at the same time
+                if (nbEmeraude > 0)
+                {
+                    p.Coins[1] = nbEmeraude;
+                }
 
-            cmdNextPlayer.Enabled = true;
-    
+                if (nbOnyx > 0)
+                {
+                    p.Coins[2] = nbOnyx;
+                }
+
+                if (nbSaphir > 0)
+                {
+                    p.Coins[3] = nbSaphir;
+                }
+
+                if (nbDiamand > 0)
+                {
+                    p.Coins[4] = nbDiamand;
+                }
+
+                MessageBox.Show("Votre choix a été validé, cliquez sur le bouton 'joueur suivant'");
+                cmdNextPlayer.Visible = true;
+                cmdNextPlayer.Enabled = true;
+            }
+            else
+            {
+                cmdNextPlayer.Visible = false;
+                cmdNextPlayer.Enabled = false;
+                MessageBox.Show("Merci de choisir des jetons");
+            }    
         }
 
         /// <summary>
@@ -631,6 +624,9 @@ namespace Splendor
         /// <param name="e"></param>
         void cmdNextPlayer_Click(object sender, EventArgs e)
         {
+            currentPlayerId++;
+            LoadPlayer(currentPlayerId);
+
 
             //TO DO in release 1.0 : 3 is hard coded (number of players for the game), it shouldn't. 
             //TO DO Get the id of the player : in release 0.1 there are only 3 players
@@ -772,6 +768,8 @@ namespace Splendor
                 cmdValidateChoice.Visible = false;
             }
         }
+
+
     }
 }
 

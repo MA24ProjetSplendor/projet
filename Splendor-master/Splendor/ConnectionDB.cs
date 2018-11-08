@@ -153,9 +153,7 @@ namespace Splendor
         }
        
 
-        
-
-
+       
         /// <summary>
         /// get the list of cards according to the level
         /// </summary>
