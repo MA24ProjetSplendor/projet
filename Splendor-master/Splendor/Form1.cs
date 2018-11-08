@@ -339,10 +339,12 @@ namespace Splendor
         /// </summary>
         /// <param name="id">identifier of the player</param>
         private void LoadPlayer(int id){
-            if(currentPlayerId >= player.Count())
+
+            if(currentPlayerId >= conn.GetNumberPlayer())
             {
                 currentPlayerId = 0;
             }
+
             string name = conn.GetPlayerName(currentPlayerId);
 
             if(player.Count() < conn.GetNumberPlayer())
@@ -361,11 +363,7 @@ namespace Splendor
             
             enableClicLabel = true;
 
-            if(currentPlayerId+1 > conn.GetNumberPlayer())
-            {
-                currentPlayerId = 0;
-            }
-
+        
             //no coins or card selected yet, labels are empty
             lblChoiceDiamand.Text = "";
             lblChoiceOnyx.Text = "";
