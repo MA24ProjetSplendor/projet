@@ -596,10 +596,7 @@ namespace Splendor
             //TO DO Check if card or coins are selected, impossible to do both at the same time
 
             cmdNextPlayer.Enabled = true;
-
-            
-
-
+    
         }
 
         /// <summary>
@@ -607,14 +604,10 @@ namespace Splendor
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-<<<<<<< HEAD
-        void cmdInsertPlayer_Click(object sender, EventArgs e)
-=======
-        /// 
 
         //a terminer 
         private void cmdInsertPlayer_Click(object sender, EventArgs e)
->>>>>>> d48a0f49a86daae040838e04ba2c5408f5622e24
+
         {
             lblNewPlayer.Visible = true;
             txtNewPlayer.Visible = true;

@@ -48,60 +48,25 @@ namespace Splendor
             SQLiteDataReader reader = command.ExecuteReader();
         }
 
-<<<<<<< HEAD
+
         public Player CreatePlayer()
         {
             Player p = new Player();
-
-=======
-        public int GetNumberPlayer()
-        {
-            int nb = 0;
->>>>>>> d48a0f49a86daae040838e04ba2c5408f5622e24
-            string sql = "select * from player";
-            SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
-            SQLiteDataReader reader = command.ExecuteReader();
-
-            while (reader.Read())
-            {
-<<<<<<< HEAD
-                p.Name = (string)reader["pseudo"];
-                p.Id = (int)reader["id"];
-            }
-
             return p;
-
-=======
-                nb++;
-            }
-
-            for (int i = 0; i <= nb; i++)
-            {
-                for(int c = 0; c <= 5; c++)
-                {
-                    string sql1 = "INSERT INTO NbCoin(fkPlayer, fkressource, nbCoin) VALUES("+ i + ",'"+ c +"' 0 )";
-                    SQLiteCommand command1 = new SQLiteCommand(sql, m_dbConnection);
-                    SQLiteDataReader reader1 = command.ExecuteReader();
-                }
-            }
-
-            return nb;
+      
         }
 
-
-<<<<<<< HEAD
-=======
         private void StartCoins()
         {
             
             string sql = "COUNT (*)";
             SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
             SQLiteDataReader reader = command.ExecuteReader();
->>>>>>> d48a0f49a86daae040838e04ba2c5408f5622e24
+
         }
 
 
->>>>>>> a9e93ad06895d855e923810dafcaafd55488ee49
+
         public int[] GetPlayerCoin(int id)
         {
             string sql = "select * from NbCoin where fkPlayer ="+id;
@@ -170,7 +135,7 @@ namespace Splendor
             return nb;
         }
 
-<<<<<<< HEAD
+
 
         public int GetNumberPlayer()
         {
@@ -185,13 +150,10 @@ namespace Splendor
             }
 
             return nb;      
-=======
-                string insertCoin = "insert into NbCoin(NbCoin) VALUES(0) where FkPlayer ="+i;
-                SQLiteCommand cmd = new SQLiteCommand(insertCoin, m_dbConnection);
-            }*/
-       
->>>>>>> d48a0f49a86daae040838e04ba2c5408f5622e24
         }
+       
+
+        
 
 
         /// <summary>
