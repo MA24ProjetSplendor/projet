@@ -38,6 +38,7 @@ namespace Splendor
             CreateInsertRessources();
             //Create and insert Coin
             CreateInsertCoin();
+            //Initialise la table des jetons des joueurs a 0
         }
 
         private void CreateInsertCoin()
@@ -47,23 +48,23 @@ namespace Splendor
             SQLiteDataReader reader = command.ExecuteReader();
         }
 
+
         public Player CreatePlayer()
         {
             Player p = new Player();
+            return p;
+      
+        }
 
-            string sql = "select * from player";
+        private void StartCoins()
+        {
+            
+            string sql = "COUNT (*)";
             SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
             SQLiteDataReader reader = command.ExecuteReader();
 
-            while (reader.Read())
-            {
-                p.Name = (string)reader["pseudo"];
-                p.Id = (int)reader["id"];
-            }
-
-            return p;
-
         }
+
 
 
         public int[] GetPlayerCoin(int id)
@@ -135,6 +136,7 @@ namespace Splendor
         }
 
 
+
         public int GetNumberPlayer()
         {
             int nb = 0;
@@ -149,6 +151,9 @@ namespace Splendor
 
             return nb;      
         }
+       
+
+        
 
 
         /// <summary>
@@ -161,8 +166,6 @@ namespace Splendor
             string sql = "select * from card where level=" + level;
             SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
             SQLiteDataReader reader = command.ExecuteReader();
-
-
 
             //TO DO
             //Create an object "Stack of Card"
@@ -225,6 +228,13 @@ namespace Splendor
             command.ExecuteNonQuery();
             sql = "insert into player (id, pseudo) values (2, 'Sam')";
             command = new SQLiteCommand(sql, m_dbConnection);
+            command.ExecuteNonQuery();
+        }
+
+        public void CreateNewPlayer(string name)
+        {
+            string sql = "insert into player (id, pseudo) values (0, '"+ name +"')";
+            SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
             command.ExecuteNonQuery();
         }
 
