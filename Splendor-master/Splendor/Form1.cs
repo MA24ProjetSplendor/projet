@@ -63,7 +63,6 @@ namespace Splendor
         {
 
             lblGoldCoin.Text = "5";
-
             lblDiamandCoin.Text = "7";
             lblEmeraudeCoin.Text = "7";
             lblOnyxCoin.Text = "7";
@@ -358,6 +357,11 @@ namespace Splendor
 
             // Create player
             Player p = conn.CreatePlayer();
+
+
+            
+
+
 
             /*
             Player player = new Player();
