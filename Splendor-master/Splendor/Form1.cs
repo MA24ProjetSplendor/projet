@@ -284,26 +284,28 @@ namespace Splendor
                 DialogResult dialogResult = MessageBox.Show(txtBox.Text, "Voulez-vous acheter la carte?", MessageBoxButtons.YesNo);
                 if (dialogResult == DialogResult.Yes)
                 {
+
+
+
+
+                    /*
                     string Ressource = ressources[0];
 
                     switch (Ressource)
                     {
 
-                        case "Rubis":
-                            List<string> cardBought = new List<string>();
-                            List<List<string>> cardBoughtDetail = new List<List<string>>();
+                        case "Rubis": p.Ressources[0] = ; break;
 
-                            cardBought.Add(ressources[0]);
+                        case "Emeraude": p.Ressources[1] = ; break;
 
-                            cardBoughtDetail.Add(cardBought);
-                            //cardBoughtDetail.Add(CostCard);
+                        case "Onyx": p.Ressources[2] = ; break;
 
-                                     
-                            //RubisCard.Add();
-                            break;
+                        case "Saphir": p.Ressources[3] = ; break;
+
+                        case "Diamand": p.Ressources[4] = ; break;
 
 
-                    }
+                    }*/
                 }
                 else if (dialogResult == DialogResult.No)
                 {
@@ -796,8 +798,6 @@ namespace Splendor
             lblNewPlayer.Visible = false;
             txtNewPlayer.Visible = false;
             cmdValiderNewPlayer.Visible = false;
-
-
 
         }
 
