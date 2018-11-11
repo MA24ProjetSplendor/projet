@@ -41,6 +41,10 @@ namespace Splendor
             //Initialise la table des jetons des joueurs a 0
         }
 
+        /// <summary>
+        /// CreateInsertCoin: Create the table NbCoin
+        /// </summary>
+
         private void CreateInsertCoin()
         {
             string sql = "CREATE TABLE NbCoin (IdNbCoin INTEGER PRIMARY KEY AUTOINCREMENT, fkPlayer INT, fkressource INT, nbCoin INT)";
@@ -48,14 +52,18 @@ namespace Splendor
             SQLiteDataReader reader = command.ExecuteReader();
         }
 
-
+        /// <summary>
+        /// CreatePlayer: create a new Player
+        /// </summary>
+        /// <returns>P</returns>
         public Player CreatePlayer()
         {
             Player p = new Player();
             return p;
-      
         }
-
+        /// <summary>
+        /// StartCoins: Count all
+        /// </summary>
         private void StartCoins()
         {
             
@@ -65,8 +73,11 @@ namespace Splendor
 
         }
 
-
-
+        /// <summary>
+        /// GetPlayerCoin: Get all information about coin by player
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public int[] GetPlayerCoin(int id)
         {
             string sql = "select * from NbCoin where fkPlayer ="+id;
@@ -88,6 +99,11 @@ namespace Splendor
             return coins;
  
         }
+        /// <summary>
+        /// SetNbCoin: Set Nb Coin by player
+        /// </summary>
+        /// <param name="idPlayer"></param>
+        /// <param name="CoinsPlayer"></param>
 
         public void SetNbCoin(int idPlayer, int[] CoinsPlayer)
         {  
@@ -101,6 +117,11 @@ namespace Splendor
             }
         }
 
+        /// <summary>
+        /// GetIdPlayer: Get The id of one player
+        /// </summary>
+        /// <param name="Name"></param>
+        /// <returns></returns>
         public int GetIdPlayer(string Name)
         {
             string sql = "select id from player where pseudo = "+Name;
@@ -109,7 +130,10 @@ namespace Splendor
             return command.ExecuteNonQuery();
 
         }
-
+        /// <summary>
+        /// InitializeCoins: Initialize all coin at 0 to start
+        /// </summary>
+        /// <returns></returns>
         public int InitializeCoins()
         {
             int nb = 0;
@@ -136,7 +160,10 @@ namespace Splendor
         }
 
 
-
+        /// <summary>
+        /// GetNumberPlayer: Get the number of player in the database
+        /// </summary>
+        /// <returns></returns>
         public int GetNumberPlayer()
         {
             int nb = 0;
