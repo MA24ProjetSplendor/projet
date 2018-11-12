@@ -177,8 +177,12 @@ namespace Splendor
                 card.Level = (int)reader["level"];
                 card.PrestigePt = (int)reader["nbPtPrestige"];
                 card.IdCard = (int)reader["idcard"];
-                card.Ress = (Ressources)reader["fkRessource"];
 
+                if(level < 4)
+                {
+                    card.Ress = (Ressources)reader["fkRessource"];
+                }
+                
                 sql = "select * from cost where fkCard = " + card.IdCard;
                 SQLiteCommand commande = new SQLiteCommand(sql, m_dbConnection);
                 SQLiteDataReader Costreader = commande.ExecuteReader();

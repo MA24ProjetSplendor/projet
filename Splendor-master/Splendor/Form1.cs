@@ -137,13 +137,13 @@ namespace Splendor
             }
 
             //load cards level 4
-            /*
+            
             listCardFour = conn.GetListCardAccordingToLevel(4);
 
             foreach (Control ctrl in flwCardNoble.Controls)
             {
                 ctrl.Text = listCardFour.Pop().ToString();
-            }*/
+            }
 
 
             //Go through the results
