@@ -375,7 +375,6 @@
             this.lblPlayerRubisCoin.TabIndex = 22;
             this.lblPlayerRubisCoin.Text = "RubisCoin";
             this.lblPlayerRubisCoin.UseMnemonic = false;
-            this.lblPlayerRubisCoin.Click += new System.EventHandler(this.lblPlayerRubisCoin_Click);
             // 
             // lblPlayerGoldCoin
             // 

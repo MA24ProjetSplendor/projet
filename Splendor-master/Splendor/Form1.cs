@@ -9,7 +9,6 @@
  * to add and to play with other players
  */
 
-
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -29,23 +28,21 @@ namespace Splendor
     public partial class frmSplendor : Form
     {
         //used to store the number of coins selected for the current round of game
-        public int nbRubis;
-        private int nbOnyx;
-        private int nbEmeraude;
-        private int nbDiamand;
-        private int nbSaphir;
-        private int nbtotal;
-   
+        public int nbRubis; // Number of Ruby
+        private int nbOnyx; // Number of Onyx
+        private int nbEmeraude; // Number of Emerald
+        private int nbDiamand; // Number of Diamond
+        private int nbSaphir; // Number of Saphir
+        private int nbtotal; // Number total of precious stone
+
         private const int maxSameCoin = 2;
 
+        private List<Player> player = new List<Player>(); // List of the player
 
-        private List<Player> player = new List<Player>();
-
-        private Stack<Card> listCardOne = new Stack<Card>();
-        private Stack<Card> listCardTwo = new Stack<Card>();
-        private Stack<Card> listCardThree = new Stack<Card>();
-        private Stack<Card> listCardFour = new Stack<Card>();
-
+        private Stack<Card> listCardOne = new Stack<Card>(); // List of the card level 1
+        private Stack<Card> listCardTwo = new Stack<Card>(); // List of the card level 2
+        private Stack<Card> listCardThree = new Stack<Card>(); // List of the card level 3
+        private Stack<Card> listCardFour = new Stack<Card>(); // List of the card level 4
 
         //id of the player that is playing
         private int currentPlayerId=0;
@@ -54,7 +51,7 @@ namespace Splendor
         //connection to the database
         private ConnectionDB conn;
 
-        Player p;
+        Player p; // The object player
 
         /// <summary>
         /// constructor
@@ -64,7 +61,6 @@ namespace Splendor
             InitializeComponent();
         }
 
-        
         /// <summary>
         /// loads the form and initialize data in it
         /// </summary>
@@ -88,12 +84,9 @@ namespace Splendor
 
             //load cards from the database
             //they are not hard coded any more
-            //TO DO
-
             //load cards from the database
 
             //load cards level 1
-
             listCardOne = conn.GetListCardAccordingToLevel(1);
             int i = 0;
             int nbstack = listCardOne.Count();
@@ -145,16 +138,12 @@ namespace Splendor
                 ctrl.Text = listCardFour.Pop().ToString();
             }
 
-
-            //Go through the results
-            //Don't forget to check when you are at the end of the stack
-
-            //fin TO DO
-
             this.Width = 680;
             this.Height = 540;
 
             enableClicLabel = false;
+
+            // Hide all choice label
 
             lblChoiceDiamand.Visible = false;
             lblChoiceOnyx.Visible = false;
@@ -165,7 +154,6 @@ namespace Splendor
             cmdNextPlayer.Visible = false;
 
             //we wire the click on all cards to the same event
-            //TO DO for all cards
 
             // Cards level 1
             txtLevel11.Click += ClickOnCard;
@@ -194,7 +182,7 @@ namespace Splendor
         }
 
         /// <summary>
-        /// ClickOnCard: Event Buy Card (Léo)
+        /// ClickOnCard: Method to buy a Card (Léo)
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -231,8 +219,11 @@ namespace Splendor
             // Parse the cost of the card and put in a Array
             for (int i = 0; i < couts.Length; i++)
             {
+                // Ressource
                 string ress = couts[i];
+                // Quantity of ressource
                 int ressQuantity = 0;
+                // Ressource lenght
                 int resLenght = ress.Length;
                 if (resLenght > 0)
                 {
@@ -242,15 +233,15 @@ namespace Splendor
 
                     switch (ressType)
                     {
-                        case "Rubis": costCard[0] = ressQuantity; break;
+                        case "Rubis": costCard[0] = ressQuantity; break; // Put the cost of the card for Ruby
 
-                        case "Emeraude": costCard[1] = ressQuantity; break;
+                        case "Emeraude": costCard[1] = ressQuantity; break; // Put the cost of the card for Emerald
 
-                        case "Onyx": costCard[2] = ressQuantity; break;
+                        case "Onyx": costCard[2] = ressQuantity; break; // Put the cost of the card for Onyx
 
-                        case "Saphir": costCard[3] = ressQuantity; break;
+                        case "Saphir": costCard[3] = ressQuantity; break; // Put the cost of the card for Saphir
 
-                        case "Diamand": costCard[4] = ressQuantity; break;
+                        case "Diamand": costCard[4] = ressQuantity; break; // Put the cost of the card for Diamond
                     }
                 }
             }
@@ -278,15 +269,15 @@ namespace Splendor
 
                 switch (cardRessource)
                 {
-                    case "Rubis": player[currentPlayerId].Ressources[0] += 1; break;
+                    case "Rubis": player[currentPlayerId].Ressources[0] += 1; break; // Add ressource (Ruby) of the card for the player who buy 
 
-                    case "Emeraude": player[currentPlayerId].Ressources[1] += 1; break;
+                    case "Emeraude": player[currentPlayerId].Ressources[1] += 1; break; // Add ressource (Emerald) of the card for the player who buy 
 
-                    case "Onyx": player[currentPlayerId].Ressources[2] += 1; break;
+                    case "Onyx": player[currentPlayerId].Ressources[2] += 1; break; // Add ressource (Onyx) of the card for the player who buy 
 
-                    case "Saphir": player[currentPlayerId].Ressources[3] += 1; break;
+                    case "Saphir": player[currentPlayerId].Ressources[3] += 1; break; // Add ressource (Saphir) of the card for the player who buy 
 
-                    case "Diamand": player[currentPlayerId].Ressources[4] += 1; break;
+                    case "Diamand": player[currentPlayerId].Ressources[4] += 1; break; // Add ressource (Diamond) of the card for the player who buy 
                 }
 
                 // Add prestige points to the player
@@ -352,7 +343,6 @@ namespace Splendor
             int id = 0;
 
             LoadPlayer(id);
-
         }
 
         /// <summary>
@@ -401,7 +391,6 @@ namespace Splendor
 
             enableClicLabel = true;
 
-        
             //no coins or card selected yet, labels are empty
             lblChoiceDiamand.Text = "";
             lblChoiceOnyx.Text = "";
@@ -440,36 +429,40 @@ namespace Splendor
         }
      
         /// <summary>
+        /// TestJetons: This method is for checking the coins you take
         /// </summary>
         /// <param name="labelChoix"></param>
         /// <param name="labelJeton"></param>
         /// <param name="nbJeton"></param>
         /// <param name="type"></param>
-        void TestJetons(Label labelChoix, Label labelJeton, int nbJeton, string type) //method test des jetons
+        void TestJetons(Label labelChoix, Label labelJeton, int nbJeton, string type) 
         {
-            
+            // Convert the label to int and put in jeton
             int jeton = Convert.ToInt32(labelJeton.Text);
 
+            // Max same coin you can take
             const int maxSameCoin = 2;
             
+            // Check coins
             if (jeton == 2 && nbJeton == 1)
             {
                 MessageBox.Show("Vous ne pouvez pas prendre deux jetons de cette couleur");
             }
             else
             {
+                // Check if the player take more than 2 coins
                 if (nbRubis == maxSameCoin || nbSaphir == maxSameCoin || nbOnyx == maxSameCoin || nbEmeraude == maxSameCoin || nbDiamand == maxSameCoin)
                 {
                     MessageBox.Show("Nombre max de pièces de la même couleur = 2");
                 }
                 else
                 {
+                    // Check if player take 2 coins of the same ressource and one of the other ressource
                     if ((nbJeton == 1 && nbSaphir == 1) || (nbJeton == 1 && nbOnyx == 1) || (nbJeton == 1 && nbEmeraude == 1) || (nbJeton == 1 && nbDiamand == 1))
                     {
                         MessageBox.Show("Vous ne pouvez pas prendre un deuxiéme jeton de la même couleur si vous avez déjà choisi un jeton de couleur différente");
                     }
-
-             
+          
                     if (nbtotal >= 3)
                     {
                         MessageBox.Show("Vous ne pouvez pas prendre plus de jetons");
@@ -491,15 +484,15 @@ namespace Splendor
 
                             switch (type)
                             {
-                                case "Rubis": nbRubis++; nbtotal = nbSaphir + nbRubis + nbEmeraude + nbOnyx + nbDiamand; break;
+                                case "Rubis": nbRubis++; nbtotal = nbSaphir + nbRubis + nbEmeraude + nbOnyx + nbDiamand; break; // Add one Ruby and update Nbtotal
 
-                                case "Saphir": nbSaphir++; nbtotal = nbSaphir + nbRubis + nbEmeraude + nbOnyx + nbDiamand; break;
+                                case "Saphir": nbSaphir++; nbtotal = nbSaphir + nbRubis + nbEmeraude + nbOnyx + nbDiamand; break; // Add one Saphir and update Nbtotal
 
-                                case "Emeraude": nbEmeraude++; nbtotal = nbSaphir + nbRubis + nbEmeraude + nbOnyx + nbDiamand; break;
+                                case "Emeraude": nbEmeraude++; nbtotal = nbSaphir + nbRubis + nbEmeraude + nbOnyx + nbDiamand; break; // Add one Emerald and update Nbtotal
 
-                                case "Onyx": nbOnyx++; nbtotal = nbSaphir + nbRubis + nbEmeraude + nbOnyx + nbDiamand; break;
+                                case "Onyx": nbOnyx++; nbtotal = nbSaphir + nbRubis + nbEmeraude + nbOnyx + nbDiamand; break; // Add one Onyx and update Nbtotal
 
-                                case "Diamand": nbDiamand++; nbtotal = nbSaphir + nbRubis + nbEmeraude + nbOnyx + nbDiamand; break;
+                                case "Diamand": nbDiamand++; nbtotal = nbSaphir + nbRubis + nbEmeraude + nbOnyx + nbDiamand; break; // Add one Diamond and update Nbtotal
 
                             }
                            
@@ -509,7 +502,8 @@ namespace Splendor
                     }
                     
                 }
-            }
+        }
+
         /// <summary>
         /// ErreurJetonSelect: if the player made a mistake, he can unselect the coin
         /// </summary>
@@ -622,7 +616,6 @@ namespace Splendor
                     break;
             }
             
-           
             currentPlayerId = (currentPlayerId % 3) + 1;
 
             if (nbtotal == 0)
@@ -653,32 +646,28 @@ namespace Splendor
         /// <param name="e"></param>
         void lblSaphirCoin_Click(object sender, EventArgs e)
         {
-
             if (enableClicLabel)
             {
                 cmdValidateChoice.Visible = true;
                 lblChoiceSaphir.Visible = true;
                 TestJetons(lblChoiceSaphir, lblSaphirCoin, nbSaphir, "Saphir");
             }
-   
         }
 
-            /// <summary>
-            /// click on the black coin (onyx) to tell the player has selected this coin
-            /// </summary>
-            /// <param name="sender"></param>
-            /// <param name="e"></param>
-
-            void lblOnyxCoin_Click(object sender, EventArgs e)
+        /// <summary>
+        /// click on the black coin (onyx) to tell the player has selected this coin
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        void lblOnyxCoin_Click(object sender, EventArgs e)
+        {
+            if (enableClicLabel)
             {
-                if (enableClicLabel)
-                {
-                    cmdValidateChoice.Visible = true;
-                    lblChoiceOnyx.Visible = true;
-                    TestJetons(lblChoiceOnyx, lblOnyxCoin, nbOnyx, "Onyx");
-
-                }
+                cmdValidateChoice.Visible = true;
+                lblChoiceOnyx.Visible = true;
+                TestJetons(lblChoiceOnyx, lblOnyxCoin, nbOnyx, "Onyx");
             }
+        }
 
         /// <summary>
         /// click on the green coin (emeraude) to tell the player has selected this coin
@@ -799,16 +788,11 @@ namespace Splendor
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-
-        //a terminer 
         private void cmdInsertPlayer_Click(object sender, EventArgs e)
-
         {
             lblNewPlayer.Visible = true;
             txtNewPlayer.Visible = true;
-            cmdValiderNewPlayer.Visible = true;
-
-            
+            cmdValiderNewPlayer.Visible = true;     
         }
 
         /// <summary>
@@ -820,41 +804,63 @@ namespace Splendor
         {
             currentPlayerId++;
             LoadPlayer(currentPlayerId);
-
-
-            //TO DO in release 1.0 : 3 is hard coded (number of players for the game), it shouldn't. 
-            //TO DO Get the id of the player : in release 0.1 there are only 3 players
-            //Reload the data of the player
-            //We are not allowed to click on the next button
-
         }
 
+        /// <summary>
+        /// lblChoiceRubis_Click: method to remove your choice for Ruby
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         void lblChoiceRubis_Click(object sender, EventArgs e)
         {
             ErreurJetonSelect("Rubis");
         }
 
+        /// <summary>
+        /// lblChoiceSaphir_Click: method to remove your choice for Saphir
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         void lblChoiceSaphir_Click(object sender, EventArgs e)
         {
             ErreurJetonSelect("Saphir");
         }
 
+        /// <summary>
+        /// lblChoiceOnyx_Click: method to remove your choice for Onyx
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         void lblChoiceOnyx_Click(object sender, EventArgs e)
         {
             ErreurJetonSelect("Onyx");
         }
 
+        /// <summary>
+        /// lblChoiceEmeraude_Click: method to remove your choice for Emerald
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void lblChoiceEmeraude_Click(object sender, EventArgs e)
         {
             ErreurJetonSelect("Emeraude");
         }
 
+        /// <summary>
+        /// lblChoiceDiamand_Click: method to remove your choice for Diamond
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void lblChoiceDiamand_Click(object sender, EventArgs e)
         {
             ErreurJetonSelect("Diamand");
         }
 
-
+        /// <summary>
+        /// cmdValiderNewPlayer_Click: Method to add a new player to the database
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void cmdValiderNewPlayer_Click(object sender, EventArgs e)
         {
             string name = txtNewPlayer.Text;
@@ -868,19 +874,11 @@ namespace Splendor
                 conn.CreateNewPlayer(name);
             }
             
-
             lblNewPlayer.Visible = false;
             txtNewPlayer.Visible = false;
             cmdValiderNewPlayer.Visible = false;
-
-
-
         }
 
-        private void lblPlayerRubisCoin_Click(object sender, EventArgs e)
-        {
-
-        }
     }
 }
 
