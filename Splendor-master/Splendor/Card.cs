@@ -131,9 +131,5 @@ namespace Splendor
             }
             return res;
         }
-
-
-
-
     }
 }
