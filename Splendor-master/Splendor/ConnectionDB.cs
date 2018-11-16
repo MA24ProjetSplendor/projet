@@ -13,7 +13,6 @@ namespace Splendor
     /// </summary>
     class ConnectionDB
     {
-
         //connection to the database
         private SQLiteConnection m_dbConnection;
 
@@ -31,10 +30,8 @@ namespace Splendor
             //create and insert players
             CreateInsertPlayer();
             //Create and insert cards
-            //TO DO
             CreateInsertCards();
             //Create and insert ressources
-            //TO DO
             CreateInsertRessources();
             //Create and insert Coin
             CreateInsertCoin();
@@ -48,7 +45,10 @@ namespace Splendor
             SQLiteDataReader reader = command.ExecuteReader();
         }
 
-
+        /// <summary>
+        /// CreatePlayer: create a new Player
+        /// </summary>
+        /// <returns></returns>
         public Player CreatePlayer()
         {
             Player p = new Player();
@@ -56,17 +56,11 @@ namespace Splendor
       
         }
 
-        private void StartCoins()
-        {
-            
-            string sql = "COUNT (*)";
-            SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
-            SQLiteDataReader reader = command.ExecuteReader();
-
-        }
-
-
-
+        /// <summary>
+        /// GetPlayerCoin: get the number of coins of a player by is id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public int[] GetPlayerCoin(int id)
         {
             string sql = "select * from NbCoin where fkPlayer ="+id;
@@ -89,6 +83,11 @@ namespace Splendor
  
         }
 
+        /// <summary>
+        /// SetNbCoin: set nb coin in the database
+        /// </summary>
+        /// <param name="idPlayer"></param>
+        /// <param name="CoinsPlayer"></param>
         public void SetNbCoin(int idPlayer, int[] CoinsPlayer)
         {  
             for (int j = 0; j < CoinsPlayer.Length; j++)
@@ -101,6 +100,11 @@ namespace Splendor
             }
         }
 
+        /// <summary>
+        /// GetIdPlayer: get the id of the player
+        /// </summary>
+        /// <param name="Name"></param>
+        /// <returns></returns>
         public int GetIdPlayer(string Name)
         {
             string sql = "select id from player where pseudo = "+Name;
@@ -110,6 +114,10 @@ namespace Splendor
 
         }
 
+        /// <summary>
+        /// InitializeCoins: initialize all coins to 0
+        /// </summary>
+        /// <returns></returns>
         public int InitializeCoins()
         {
             int nb = 0;
@@ -135,8 +143,10 @@ namespace Splendor
             return nb;
         }
 
-
-
+        /// <summary>
+        /// GetNumberPlayer: get the number of player in the database
+        /// </summary>
+        /// <returns></returns>
         public int GetNumberPlayer()
         {
             int nb = 0;
@@ -151,9 +161,7 @@ namespace Splendor
 
             return nb;      
         }
-       
-
-       
+        
         /// <summary>
         /// get the list of cards according to the level
         /// </summary>
@@ -195,23 +203,8 @@ namespace Splendor
                 listCard.Push(card);
             }
 
-
-
-            //while (....)
-
-            //select the cost of the card : look at the cost table (and other)
-
-            //do while to go to every record of the card table
-            //while (....)
-            //{
-            //get the nbRessource of the cost
-            //}
-            //push card into the stack
-
-            //}
             return listCard;
         }
-
 
         /// <summary>
         /// create the "player" table and insert data
@@ -225,21 +218,26 @@ namespace Splendor
             sql = "insert into player (id, pseudo) values (0, 'Fred')";
             command = new SQLiteCommand(sql, m_dbConnection);
             command.ExecuteNonQuery();
+
             sql = "insert into player (id, pseudo) values (1, 'Harry')";
             command = new SQLiteCommand(sql, m_dbConnection);
             command.ExecuteNonQuery();
+
             sql = "insert into player (id, pseudo) values (2, 'Sam')";
             command = new SQLiteCommand(sql, m_dbConnection);
             command.ExecuteNonQuery();
         }
 
+        /// <summary>
+        /// CreateNewPlayer: create a new player
+        /// </summary>
+        /// <param name="name"></param>
         public void CreateNewPlayer(string name)
         {
             string sql = "insert into player (id, pseudo) values (0, '"+ name +"')";
             SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
             command.ExecuteNonQuery();
         }
-
 
         /// <summary>
         /// get the name of the player according to his id
@@ -251,11 +249,14 @@ namespace Splendor
             string sql = "select pseudo from player where id = " + id;
             SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
             SQLiteDataReader reader = command.ExecuteReader();
+
             string name = "";
+
             while (reader.Read())
             {
                 name = reader["pseudo"].ToString();
             }
+
             return name;
         }
 
@@ -264,11 +265,9 @@ namespace Splendor
         /// </summary>
         private void CreateInsertRessources()
         {
-
             InsertInto("CREATE TABLE ressource (idRessource INT PRIMARY KEY, Nom STRING)");
             
             // Insérer les données dans la table Ressource
-
             InsertInto("insert into ressource(idRessource, Nom) values (1,'Rubis')");
             InsertInto("insert into ressource(idRessource, Nom) values (2,'Emeraude')");
             InsertInto("insert into ressource(idRessource, Nom) values (3,'Onyx')");
@@ -277,6 +276,10 @@ namespace Splendor
             InsertInto("insert into ressource(idRessource, Nom) values (6,'Or')");
         }
 
+        /// <summary>
+        /// InsertInto: Method to simplify the use of insertinto
+        /// </summary>
+        /// <param name="sql"></param>
         private void InsertInto(string sql)
         {
             SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
@@ -289,12 +292,10 @@ namespace Splendor
         private void CreateInsertCards()
         {
             // Créer la table
-
             InsertInto("CREATE TABLE card (idcard INT PRIMARY KEY, fkRessource Int, level Int, nbPtPrestige Int, fkPlayer Int)");  
             InsertInto("CREATE TABLE cost (idCost INTEGER PRIMARY KEY AUTOINCREMENT , fkCard INT, fkRessource INT, nbRessource INT)");
          
-            // Insérer les données dans la table Costs
-
+            // Insérer les données dans la table Costs 
             InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (2,2,4)");
             InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (2,4,4)");
             InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (3,1,4)");
@@ -536,9 +537,7 @@ namespace Splendor
             InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (100,5,1)");
             InsertInto("insert into cost(fkCard, fkRessource, nbRessource) values (101,4,4)");
 
-
             // Insérer les données dans la table Cards
-
             InsertInto("insert into card(idcard, level, nbPtPrestige) values (2,4,3)");
             InsertInto("insert into card(idcard, level, nbPtPrestige) values (3,4,3)");
             InsertInto("insert into card(idcard, level, nbPtPrestige) values (4,4,3)");
@@ -639,8 +638,6 @@ namespace Splendor
             InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (99, 2,1,0)");
             InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (100, 2,1,0)");
             InsertInto("insert into card(idcard, fkRessource, level, nbPtPrestige) values (101, 2,1,1)");
-
-
         }
 
     }
